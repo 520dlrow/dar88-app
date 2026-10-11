@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.DAR88" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">#faf6ec</item>
+        <item name="android:statusBarColor">#faf6ec</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>
