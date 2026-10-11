@@ -58,21 +58,63 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
 .msg-row.other{align-self:flex-start}
 .msg-avatar{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;font-family:var(--fd);font-weight:700;font-size:13px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.12);overflow:hidden;position:relative}
 .msg-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.msg-bubble{padding:10px 14px;border-radius:16px;font-size:14.5px;line-height:1.45;word-break:break-word;position:relative}
+.msg-bubble{padding:10px 14px;border-radius:16px;font-size:14.5px;line-height:1.45;word-break:break-word;position:relative;max-width:100%}
 .msg-row.mine .msg-bubble{background:var(--accent);color:#fff;border-bottom-right-radius:5px;box-shadow:0 2px 8px var(--accent-glow)}
 .msg-row.other .msg-bubble{background:var(--surface-2);color:var(--text);border-bottom-left-radius:5px}
 .msg-who{font-family:var(--fm);font-size:9.5px;letter-spacing:.06em;font-weight:700;margin-bottom:3px;display:block;text-transform:uppercase;opacity:.8}
 .msg-row.mine .msg-who{color:rgba(255,255,255,.85)}
 .msg-row.other .msg-who{color:var(--accent-dark)}
 .msg-time{display:block;font-family:var(--fm);font-size:9px;letter-spacing:.05em;opacity:.55;margin-top:3px}
+.msg-bubble img.photo{display:block;max-width:240px;max-height:280px;border-radius:10px;margin:2px 0}
+.msg-bubble .voice{display:flex;align-items:center;gap:10px;min-width:180px;padding:2px 0}
+.voice-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.25);display:grid;place-items:center;flex-shrink:0;cursor:pointer}
+.msg-row.other .voice-btn{background:var(--accent-soft);color:var(--accent)}
+.voice-btn svg{width:15px;height:15px;fill:currentColor}
+.voice-wave{flex:1;height:24px;display:flex;align-items:center;gap:2px}
+.voice-wave span{flex:1;background:currentColor;opacity:.5;border-radius:2px;height:30%}
+.voice-wave span:nth-child(2n){height:60%}
+.voice-wave span:nth-child(3n){height:85%}
+.voice-wave span:nth-child(5n){height:45%}
+.voice-dur{font-family:var(--fm);font-size:10.5px;letter-spacing:.05em;opacity:.7;flex-shrink:0}
 @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.composer{display:flex;gap:8px;padding:12px 0;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--border);flex-shrink:0}
+.composer{display:flex;gap:8px;padding:12px 0;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--border);flex-shrink:0;align-items:flex-end}
+.attach{width:46px;height:46px;flex-shrink:0;border-radius:var(--r);background:var(--surface);border:1px solid var(--border);display:grid;place-items:center;transition:transform .15s,background .2s}
+.attach:active{transform:scale(.94);background:var(--surface-2)}
+.attach svg{width:20px;height:20px;fill:none;stroke:var(--text-2);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .composer input{flex:1;padding:13px 16px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);font-size:15px;transition:border-color .3s,box-shadow .3s}
 .composer input:focus{border-color:var(--border-hi);box-shadow:0 0 0 3px var(--accent-soft)}
-.send{width:48px;height:48px;flex-shrink:0;border-radius:var(--r);background:var(--accent);color:#fff;display:grid;place-items:center;box-shadow:0 4px 12px var(--accent-glow);transition:all .2s}
+.send{width:48px;height:48px;flex-shrink:0;border-radius:var(--r);background:var(--accent);color:#fff;display:grid;place-items:center;box-shadow:0 4px 12px var(--accent-glow);transition:all .25s;position:relative}
 .send:active:not(:disabled){background:var(--accent-dark);transform:scale(.96)}
 .send:disabled{background:var(--surface-3);color:var(--text-3);box-shadow:none;cursor:not-allowed}
 .send svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.send.sent{animation:sentPulse .5s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes sentPulse{0%{transform:scale(1)}40%{transform:scale(1.15);background:var(--ok)}100%{transform:scale(1);background:var(--accent)}}
+/* Attach menu */
+.attach-menu{position:absolute;left:18px;right:18px;bottom:calc(80px + env(safe-area-inset-bottom,0px));background:var(--surface);border:1px solid var(--border-hi);border-radius:var(--r-lg);box-shadow:0 12px 40px rgba(0,0,0,.18);padding:8px;display:none;z-index:20;animation:menuUp .25s cubic-bezier(.2,.8,.2,1)}
+.attach-menu.on{display:flex;gap:6px}
+@keyframes menuUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.attach-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 10px;border-radius:12px;transition:background .2s}
+.attach-item:active{background:var(--surface-2)}
+.attach-item .ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.attach-item .ic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.attach-item .lbl{font-family:var(--fm);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-2);font-weight:600}
+/* Recording overlay */
+.recording-bar{position:absolute;left:18px;right:18px;bottom:calc(80px + env(safe-area-inset-bottom,0px));background:var(--surface);border:1px solid var(--warn);border-radius:var(--r-lg);box-shadow:0 12px 40px rgba(0,0,0,.18);padding:14px 16px;display:none;z-index:25;align-items:center;gap:14px;animation:menuUp .25s cubic-bezier(.2,.8,.2,1)}
+.recording-bar.on{display:flex}
+.rec-dot{width:12px;height:12px;border-radius:50%;background:#e8483a;animation:rec 1s ease-in-out infinite;flex-shrink:0}
+@keyframes rec{50%{opacity:.3;transform:scale(1.2)}}
+.rec-time{font-family:var(--fm);font-size:14px;font-weight:700;color:var(--text);flex:1}
+.rec-btn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;transition:all .2s}
+.rec-btn:active{transform:scale(.94)}
+.rec-btn.cancel{background:var(--surface-2);color:var(--text-2)}
+.rec-btn.send{background:var(--accent);color:#fff;box-shadow:0 3px 10px var(--accent-glow)}
+.rec-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* Image preview */
+.preview-bar{position:absolute;left:18px;right:18px;bottom:calc(80px + env(safe-area-inset-bottom,0px));background:var(--surface);border:1px solid var(--border-hi);border-radius:var(--r-lg);box-shadow:0 12px 40px rgba(0,0,0,.18);padding:12px;display:none;z-index:25;gap:12px;align-items:center;animation:menuUp .25s cubic-bezier(.2,.8,.2,1)}
+.preview-bar.on{display:flex}
+.preview-bar img{width:56px;height:56px;object-fit:cover;border-radius:10px;flex-shrink:0}
+.preview-info{flex:1;font-family:var(--fm);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);font-weight:600}
+/* Settings */
 .settings{flex:1;overflow-y:auto;padding:6px 0}
 .settings h2{font-family:var(--fd);font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
 .settings .sub{color:var(--text-2);font-size:13.5px;margin-bottom:22px}
@@ -134,7 +176,34 @@ input[type=file]{display:none}
   <div class="online-strip" id="online-strip"></div>
   <div class="chat">
     <div class="log" id="log"></div>
+
+    <div class="attach-menu" id="attach-menu">
+      <button class="attach-item" id="pick-photo">
+        <div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div>
+        <span class="lbl">Photo</span>
+      </button>
+      <button class="attach-item" id="rec-voice">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 19v3M8 22h8"/></svg></div>
+        <span class="lbl">Voix</span>
+      </button>
+    </div>
+
+    <div class="recording-bar" id="recording-bar">
+      <span class="rec-dot"></span>
+      <span class="rec-time" id="rec-time">0:00</span>
+      <button class="rec-btn cancel" id="rec-cancel"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      <button class="rec-btn send" id="rec-send"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </div>
+
+    <div class="preview-bar" id="preview-bar">
+      <img id="preview-img">
+      <span class="preview-info">Prêt à envoyer</span>
+      <button class="rec-btn cancel" id="preview-cancel"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      <button class="rec-btn send" id="preview-send"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </div>
+
     <div class="composer">
+      <button class="attach" id="attach-btn" aria-label="Joindre"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
       <input id="msg" placeholder="Écrivez à la famille…" maxlength="2000" autocomplete="off">
       <button class="send" id="send" disabled><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     </div>
@@ -205,56 +274,38 @@ var log=$('log'),msgInput=$('msg'),sendBtn=$('send'),onlineStrip=$('online-strip
 var setBtn=$('open-settings'),closeSetBtn=$('close-settings'),setName=$('set-name'),setSound=$('set-sound'),themesEl=$('themes');
 var setAvatar=$('set-avatar'),setInitials=$('set-initials'),setImg=$('set-img');
 var pickAvatar=$('pick-avatar'),pickAvatar2=$('pick-avatar-2');
+var attachBtn=$('attach-btn'),attachMenu=$('attach-menu'),pickPhotoBtn=$('pick-photo'),recVoiceBtn=$('rec-voice');
+var recordingBar=$('recording-bar'),recTime=$('rec-time'),recCancel=$('rec-cancel'),recSend=$('rec-send');
+var previewBar=$('preview-bar'),previewImg=$('preview-img'),previewCancel=$('preview-cancel'),previewSend=$('preview-send');
 
 var myName='';
-var myAvatar='';        // data URL of thumbnail
-var myAvatarRaw='';     // base64 without data: prefix (for network)
+var myAvatar='';
+var myAvatarRaw='';
 var peers={};
 var soundOn=true;
 var currentTheme='creme';
 
-function save(){
-  try{localStorage.setItem('dar88',JSON.stringify({name:myName,avatar:myAvatar,sound:soundOn,theme:currentTheme}))}catch(_){}
-}
-function load(){
-  try{
-    var s=JSON.parse(localStorage.getItem('dar88')||'{}');
-    if(s.name){myName=s.name;wName.value=s.name;wEnter.disabled=false}
-    if(s.avatar){myAvatar=s.avatar;myAvatarRaw=s.avatar.split(',')[1]||'';updateMyAvatarUI()}
-    if(typeof s.sound==='boolean')soundOn=s.sound;
-    if(s.theme)currentTheme=s.theme;
-  }catch(_){}
-}
+var recInterval=null,recSeconds=0,pendingImage=null;
+
+function save(){try{localStorage.setItem('dar88',JSON.stringify({name:myName,avatar:myAvatar,sound:soundOn,theme:currentTheme}))}catch(_){}}
+function load(){try{var s=JSON.parse(localStorage.getItem('dar88')||'{}');if(s.name){myName=s.name;wName.value=s.name;wEnter.disabled=false}if(s.avatar){myAvatar=s.avatar;myAvatarRaw=s.avatar.split(',')[1]||'';updateMyAvatarUI()}if(typeof s.sound==='boolean')soundOn=s.sound;if(s.theme)currentTheme=s.theme}catch(_){}}
 load();
-
-function updateMyAvatarUI(){
-  var n=myName||wName.value||'?';
-  var ini=initials(n);
-  [wInitials,setInitials].forEach(function(el){el.textContent=ini});
-  [wImg,setImg].forEach(function(img){
-    if(myAvatar){img.src=myAvatar;img.style.display='block'}
-    else{img.style.display='none'}
-  });
-}
-
-function applyTheme(name){
-  currentTheme=name;
-  document.documentElement.setAttribute('data-theme',name);
-  document.querySelectorAll('.theme-swatch').forEach(function(el){el.classList.toggle('active',el.dataset.theme===name)});
-  save();
-}
+function updateMyAvatarUI(){var n=myName||wName.value||'?';var ini=initials(n);[wInitials,setInitials].forEach(function(el){el.textContent=ini});[wImg,setImg].forEach(function(img){if(myAvatar){img.src=myAvatar;img.style.display='block'}else{img.style.display='none'}})}
+function applyTheme(name){currentTheme=name;document.documentElement.setAttribute('data-theme',name);document.querySelectorAll('.theme-swatch').forEach(function(el){el.classList.toggle('active',el.dataset.theme===name)});save()}
 applyTheme(currentTheme);
 themesEl.addEventListener('click',function(e){var b=e.target.closest('.theme-swatch');if(!b)return;applyTheme(b.dataset.theme);playSound('tap')});
 
 var audioCtx=null;
 function initAudio(){if(audioCtx)return;try{audioCtx=new (window.AudioContext||window.webkitAudioContext)()}catch(_){}}
 function beep(f,d,v,delay){if(!soundOn||!audioCtx)return;var t=audioCtx.currentTime+(delay||0);var o=audioCtx.createOscillator();var g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(v,t+0.008);g.gain.exponentialRampToValueAtTime(0.0001,t+d);o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+d+0.03)}
-function playSound(k){initAudio();if(k==='tap')beep(1400,0.025,0.06);else if(k==='send'){beep(880,0.06,0.08,0);beep(1180,0.09,0.07,0.06)}else if(k==='receive'){beep(660,0.07,0.08,0);beep(990,0.11,0.07,0.07)}}
+function playSound(k){initAudio();if(k==='tap')beep(1400,0.025,0.06);else if(k==='send'){beep(880,0.06,0.08,0);beep(1180,0.09,0.07,0.06)}else if(k==='receive'){beep(660,0.07,0.08,0);beep(990,0.11,0.07,0.07)}else if(k==='tick')beep(1800,0.02,0.04)}
 
 function initials(n){var w=String(n||'?').trim().split(/\s+/);return ((w[0]||'?')[0]+((w[1]||'')[0]||'')).toUpperCase()}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function timeStr(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
 function show(v){[vWelcome,vChat,vSettings].forEach(function(x){x.classList.remove('active')});v.classList.add('active')}
+function colorFor(name){var h=0;for(var i=0;i<name.length;i++)h=(h*31+name.charCodeAt(i))>>>0;var c=['#c1683f','#7a5ab8','#4a7c48','#2e6ea8','#b04632','#c98a2a','#a05a7a','#3d7a82','#8a5a2e','#5a7a3a'];return c[h%c.length]}
+function fmtDur(s){return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2)}
 
 wName.addEventListener('input',function(){myName=wName.value.trim();wEnter.disabled=!myName;updateMyAvatarUI()});
 wName.addEventListener('keydown',function(e){if(e.key==='Enter'&&wName.value.trim())wEnter.click()});
@@ -267,33 +318,41 @@ wEnter.addEventListener('click',function(){
   show(vChat);addWelcome();renderOnline();playSound('tap');
 });
 
-function addWelcome(){
-  var el=document.createElement('div');el.className='welcome-banner';
-  el.innerHTML='<div class="house-mini"><svg viewBox="0 0 200 150"><path d="M15 72 100 20l85 52"/><path d="M30 68v70h140V68"/><rect x="86" y="92" width="28" height="46" rx="2" fill="currentColor" stroke="none"/></svg></div><div>Bienvenue à la maison</div><div class="tag">La famille est réunie</div>';
-  log.appendChild(el);
-}
+function addWelcome(){var el=document.createElement('div');el.className='welcome-banner';el.innerHTML='<div class="house-mini"><svg viewBox="0 0 200 150"><path d="M15 72 100 20l85 52"/><path d="M30 68v70h140V68"/><rect x="86" y="92" width="28" height="46" rx="2" fill="currentColor" stroke="none"/></svg></div><div>Bienvenue à la maison</div><div class="tag">La famille est réunie</div>';log.appendChild(el)}
 
-function avatarHTML(name,avatar,cls){
-  var ini=initials(name);
-  var bg=colorFor(name);
-  var img=avatar?'<img src="data:image/jpeg;base64,'+avatar+'">':'';
-  return '<div class="'+cls+'" style="background:'+bg+'"><span>'+ini+'</span>'+img+'</div>';
-}
-function colorFor(name){var h=0;for(var i=0;i<name.length;i++)h=(h*31+name.charCodeAt(i))>>>0;var c=['#c1683f','#7a5ab8','#4a7c48','#2e6ea8','#b04632','#c98a2a','#a05a7a','#3d7a82','#8a5a2e','#5a7a3a'];return c[h%c.length]}
+function makeAvatar(name,avatar){var av=document.createElement('div');av.className='msg-avatar';av.style.background=colorFor(name);var img=avatar?'<img src="data:image/jpeg;base64,'+avatar+'">':'';av.innerHTML='<span>'+initials(name)+'</span>'+img;return av}
 
-function addMsg(m){
-  var row=document.createElement('div');
-  row.className='msg-row '+(m.mine?'mine':'other');
-  var av=document.createElement('div');
-  av.className='msg-avatar';
-  av.style.background=colorFor(m.name);
-  var img=m.avatar?'<img src="data:image/jpeg;base64,'+m.avatar+'">':'';
-  av.innerHTML='<span>'+initials(m.name)+'</span>'+img;
-  var bubble=document.createElement('div');
-  bubble.className='msg-bubble';
-  bubble.innerHTML='<span class="msg-who">'+esc(m.name)+'</span>'+esc(m.text)+'<span class="msg-time">'+timeStr()+'</span>';
-  row.appendChild(av);row.appendChild(bubble);
-  log.appendChild(row);log.scrollTop=log.scrollHeight;
+function addTextMsg(m){
+  var row=document.createElement('div');row.className='msg-row '+(m.mine?'mine':'other');
+  row.appendChild(makeAvatar(m.name,m.avatar));
+  var b=document.createElement('div');b.className='msg-bubble';
+  b.innerHTML='<span class="msg-who">'+esc(m.name)+'</span>'+esc(m.text)+'<span class="msg-time">'+timeStr()+'</span>';
+  row.appendChild(b);log.appendChild(row);log.scrollTop=log.scrollHeight;
+}
+function addImageMsg(m){
+  var row=document.createElement('div');row.className='msg-row '+(m.mine?'mine':'other');
+  row.appendChild(makeAvatar(m.name,m.avatar));
+  var b=document.createElement('div');b.className='msg-bubble';
+  b.innerHTML='<span class="msg-who">'+esc(m.name)+'</span><img class="photo" src="data:image/jpeg;base64,'+m.data+'"><span class="msg-time">'+timeStr()+'</span>';
+  row.appendChild(b);log.appendChild(row);log.scrollTop=log.scrollHeight;
+}
+function addVoiceMsg(m){
+  var row=document.createElement('div');row.className='msg-row '+(m.mine?'mine':'other');
+  row.appendChild(makeAvatar(m.name,m.avatar));
+  var b=document.createElement('div');b.className='msg-bubble';
+  var wave='';for(var i=0;i<20;i++)wave+='<span></span>';
+  b.innerHTML='<span class="msg-who">'+esc(m.name)+'</span><div class="voice"><div class="voice-btn" data-audio="'+m.data+'"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="voice-wave">'+wave+'</div><span class="voice-dur">'+fmtDur(m.dur||0)+'</span></div><span class="msg-time">'+timeStr()+'</span>';
+  row.appendChild(b);log.appendChild(row);log.scrollTop=log.scrollHeight;
+  b.querySelector('.voice-btn').addEventListener('click',function(){playVoice(m.data,this)});
+}
+var currentAudio=null;
+function playVoice(b64,btn){
+  if(currentAudio){currentAudio.pause();currentAudio=null}
+  var audio=new Audio('data:audio/mp4;base64,'+b64);
+  currentAudio=audio;
+  btn.innerHTML='<svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
+  audio.onended=function(){btn.innerHTML='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';currentAudio=null};
+  audio.play();
 }
 
 function renderOnline(){
@@ -302,40 +361,104 @@ function renderOnline(){
   var cnt=document.createElement('div');cnt.className='online-count';
   cnt.innerHTML='<span class="dot"></span>'+count+(count>1?' personnes':' personne');
   onlineStrip.appendChild(cnt);
-  var me=document.createElement('div');me.className='avatar me';
-  me.style.background=colorFor(myName);
+  var me=document.createElement('div');me.className='avatar me';me.style.background=colorFor(myName);
   me.innerHTML='<span>'+initials(myName)+'</span>'+(myAvatar?'<img src="'+myAvatar+'">':'');
-  me.title=myName+' (vous)';
-  onlineStrip.appendChild(me);
+  me.title=myName+' (vous)';onlineStrip.appendChild(me);
   Object.keys(peers).forEach(function(id){
-    var p=peers[id];
-    var a=document.createElement('div');a.className='avatar';
-    a.style.background=colorFor(p.name);
+    var p=peers[id];var a=document.createElement('div');a.className='avatar';a.style.background=colorFor(p.name);
     a.innerHTML='<span>'+initials(p.name)+'</span>'+(p.avatar?'<img src="data:image/jpeg;base64,'+p.avatar+'">':'');
-    a.title=p.name;
-    onlineStrip.appendChild(a);
+    a.title=p.name;onlineStrip.appendChild(a);
   });
   hdStatus.textContent='La maison · '+count+(count>1?' en ligne':'');
 }
 
+/* Composer */
 msgInput.addEventListener('input',function(){sendBtn.disabled=!msgInput.value.trim()});
-sendBtn.addEventListener('click',sendMsg);
-msgInput.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();sendMsg()}});
-function sendMsg(){
+sendBtn.addEventListener('click',sendText);
+msgInput.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();sendText()}});
+function sendText(){
   var text=msgInput.value.trim();
   if(!text||!myName)return;
   if(window.Android&&Android.send){Android.send(text)}
-  addMsg({name:myName,text:text,mine:true,avatar:myAvatarRaw});
+  addTextMsg({name:myName,text:text,mine:true,avatar:myAvatarRaw});
   msgInput.value='';sendBtn.disabled=true;
+  sendBtn.classList.add('sent');setTimeout(function(){sendBtn.classList.remove('sent')},550);
   playSound('send');
 }
 
+/* Attach menu */
+attachBtn.addEventListener('click',function(e){
+  e.stopPropagation();
+  attachMenu.classList.toggle('on');
+  playSound('tap');
+});
+document.addEventListener('click',function(e){
+  if(!attachMenu.contains(e.target)&&e.target!==attachBtn){attachMenu.classList.remove('on')}
+});
+
+pickPhotoBtn.addEventListener('click',function(){
+  attachMenu.classList.remove('on');
+  if(window.Android&&Android.pickImage){Android.pickImage()}
+});
+
+/* Image received from native */
+window.onPickedImage=function(b64){
+  pendingImage=b64;
+  previewImg.src='data:image/jpeg;base64,'+b64;
+  previewBar.classList.add('on');
+};
+previewCancel.addEventListener('click',function(){previewBar.classList.remove('on');pendingImage=null;playSound('tap')});
+previewSend.addEventListener('click',function(){
+  if(!pendingImage)return;
+  if(window.Android&&Android.sendFile){Android.sendFile('image',pendingImage)}
+  addImageMsg({name:myName,data:pendingImage,mine:true,avatar:myAvatarRaw});
+  previewBar.classList.remove('on');pendingImage=null;
+  playSound('send');
+});
+
+/* Voice recording */
+recVoiceBtn.addEventListener('click',function(){
+  attachMenu.classList.remove('on');
+  if(window.Android&&Android.startRecording){Android.startRecording()}
+  recSeconds=0;recTime.textContent='0:00';
+  recordingBar.classList.add('on');
+  recInterval=setInterval(function(){
+    recSeconds++;
+    recTime.textContent=fmtDur(recSeconds);
+    if(recSeconds>=60){ /* max 60s */
+      stopRecSend();
+    }
+  },1000);
+});
+function stopRecCleanup(){if(recInterval){clearInterval(recInterval);recInterval=null}recordingBar.classList.remove('on')}
+recCancel.addEventListener('click',function(){
+  stopRecCleanup();
+  if(window.Android&&Android.cancelRecording){Android.cancelRecording()}
+  playSound('tap');
+});
+function stopRecSend(){
+  var dur=recSeconds;
+  stopRecCleanup();
+  if(window.Android&&Android.stopRecording){Android.stopRecording();window.__lastRecDur=dur}
+}
+recSend.addEventListener('click',stopRecSend);
+
+window.onRecorded=function(b64){
+  var dur=window.__lastRecDur||recSeconds;
+  if(window.Android&&Android.sendFile){Android.sendFile('voice',b64+'|'+dur)}
+  // Need to split for the message display
+  addVoiceMsg({name:myName,data:b64,dur:dur,mine:true,avatar:myAvatarRaw});
+  playSound('send');
+};
+window.onRecordError=function(){stopRecCleanup();playSound('tap')};
+
+/* Settings */
 setBtn.addEventListener('click',function(){setName.value=myName;show(vSettings);playSound('tap')});
 closeSetBtn.addEventListener('click',function(){show(vChat);playSound('tap')});
 setName.addEventListener('input',function(){var v=setName.value.trim().slice(0,30);if(v){myName=v;save();renderOnline();updateMyAvatarUI()}});
 setSound.addEventListener('click',function(){soundOn=!soundOn;setSound.classList.toggle('on',soundOn);save();if(soundOn)playSound('tap')});
 
-/* Profile pic */
+/* Profile pic via HTML file input — quick path */
 wAvatar.addEventListener('click',function(){pickAvatar.click()});
 setAvatar.addEventListener('click',function(){pickAvatar2.click()});
 function handleFile(input){
@@ -345,17 +468,12 @@ function handleFile(input){
   reader.onload=function(e){
     var img=new Image();
     img.onload=function(){
-      var size=180;
-      var c=document.createElement('canvas');c.width=size;c.height=size;
-      var ctx=c.getContext('2d');
-      var min=Math.min(img.width,img.height);
-      var sx=(img.width-min)/2, sy=(img.height-min)/2;
-      ctx.drawImage(img,sx,sy,min,min,0,0,size,size);
+      var size=180;var c=document.createElement('canvas');c.width=size;c.height=size;
+      var ctx=c.getContext('2d');var min=Math.min(img.width,img.height);
+      ctx.drawImage(img,(img.width-min)/2,(img.height-min)/2,min,min,0,0,size,size);
       var dataURL=c.toDataURL('image/jpeg',0.78);
-      myAvatar=dataURL;
-      myAvatarRaw=dataURL.split(',')[1];
-      updateMyAvatarUI();
-      save();
+      myAvatar=dataURL;myAvatarRaw=dataURL.split(',')[1];
+      updateMyAvatarUI();save();
       if(window.Android&&Android.start&&myName){Android.start(myName,myAvatarRaw)}
       playSound('tap');
     };
@@ -367,16 +485,23 @@ function handleFile(input){
 pickAvatar.addEventListener('change',function(){handleFile(pickAvatar)});
 pickAvatar2.addEventListener('change',function(){handleFile(pickAvatar2)});
 
-window.onPeer=function(id,name,avatar){
-  peers[id]={name:name,avatar:avatar||'',lastSeen:Date.now()};
-  renderOnline();
-};
+/* Native callbacks */
+window.onPeer=function(id,name,avatar){peers[id]={name:name,avatar:avatar||'',lastSeen:Date.now()};renderOnline()};
 window.onPeerGone=function(id){delete peers[id];renderOnline()};
 window.onMessage=function(fromId,fromName,text){
-  if(fromId===myName)return; /* extra safety */
-  var p=peers[fromId];
-  var av=p?p.avatar:'';
-  addMsg({name:fromName,text:text,mine:false,avatar:av});
+  if(fromId===myName)return;
+  var p=peers[fromId];var av=p?p.avatar:'';
+  addTextMsg({name:fromName,text:text,mine:false,avatar:av});
+  playSound('receive');
+};
+window.onFile=function(fromId,fromName,type,data){
+  var p=peers[fromId];var av=p?p.avatar:'';
+  if(type==='image'){addImageMsg({name:fromName,data:data,mine:false,avatar:av})}
+  else if(type==='voice'){
+    var parts=data.split('|');
+    var dur=parseInt(parts[1]||'0');
+    addVoiceMsg({name:fromName,data:parts[0],dur:dur,mine:false,avatar:av});
+  }
   playSound('receive');
 };
 
