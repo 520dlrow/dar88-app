@@ -56,7 +56,7 @@ class UdpService(
     }
 
     private fun listenLoop() {
-        val buf = ByteArray(4096)
+        val buf = ByteArray(65535)
         while (running) {
             try {
                 val packet = DatagramPacket(buf, buf.size)
@@ -73,34 +73,40 @@ class UdpService(
             try {
                 val msg = "$MAGIC:HELLO:$myId:$myName"
                 val bytes = msg.toByteArray()
-
-                // Global broadcast
-                try {
-                    socket?.send(DatagramPacket(
-                        bytes, bytes.size,
-                        InetAddress.getByName("255.255.255.255"), PORT
-                    ))
-                } catch (_: Exception) {}
-
-                // Per-interface broadcast (more reliable on Android)
-                try {
-                    NetworkInterface.getNetworkInterfaces().toList().forEach { iface ->
-                        if (!iface.isUp || iface.isLoopback) return@forEach
-                        iface.interfaceAddresses.forEach { addr ->
-                            val bcast = addr.broadcast
-                            if (bcast != null) {
-                                try {
-                                    socket?.send(DatagramPacket(bytes, bytes.size, bcast, PORT))
-                                } catch (_: Exception) {}
-                            }
-                        }
-                    }
-                } catch (_: Exception) {}
+                broadcastBytes(bytes)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
             Thread.sleep(HELLO_INTERVAL)
         }
+    }
+
+    private fun broadcastBytes(bytes: ByteArray) {
+        try {
+            socket?.send(DatagramPacket(
+                bytes, bytes.size,
+                InetAddress.getByName("255.255.255.255"), PORT
+            ))
+        } catch (_: Exception) {}
+
+        try {
+            NetworkInterface.getNetworkInterfaces().toList().forEach { iface ->
+                if (!iface.isUp || iface.isLoopback) return@forEach
+                iface.interfaceAddresses.forEach { addr ->
+                    val bcast = addr.broadcast
+                    if (bcast != null) {
+                        try {
+                            socket?.send(DatagramPacket(bytes, bytes.size, bcast, PORT))
+                        } catch (_: Exception) {}
+                    }
+                }
+            }
+        } catch (_: Exception) {}
+    }
+
+    fun sendToAll(fromName: String, text: String) {
+        val msg = "$MAGIC:MSG:$myId:$fromName:$text"
+        broadcastBytes(msg.toByteArray())
     }
 
     private fun cleanupLoop() {
@@ -138,17 +144,6 @@ class UdpService(
                 peers[fromId]?.lastSeen = System.currentTimeMillis()
                 onMessage(fromId, fromName, text)
             }
-        }
-    }
-
-    fun sendMessage(peerId: String, fromName: String, text: String) {
-        val peer = peers[peerId] ?: return
-        try {
-            val msg = "$MAGIC:MSG:$myId:$fromName:$text"
-            val bytes = msg.toByteArray()
-            socket?.send(DatagramPacket(bytes, bytes.size, peer.address, PORT))
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
     }
 
