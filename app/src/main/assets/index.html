@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DAR88</title>
+<style>
+:root{--bg:#faf6ec;--bg-2:#f3ecdc;--surface:#fff;--surface-2:#f2ead9;--surface-3:#e9dfc9;--border:rgba(74,51,32,.12);--border-hi:rgba(193,104,63,.55);--text:#2c231a;--text-2:#6e5f4d;--text-3:#a3937e;--accent:#c1683f;--accent-dark:#9d4f2c;--accent-soft:rgba(193,104,63,.10);--accent-glow:rgba(193,104,63,.22);--ok:#6b8b5a;--r:12px;--r-lg:18px;--fd:Georgia,serif;--fb:system-ui,sans-serif;--fm:ui-monospace,Menlo,monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--fb);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow:hidden}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+input{font:inherit;color:inherit;border:0;background:none;outline:none}
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 50% 0%,rgba(193,104,63,.06),transparent 55%),linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%)}
+.app{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;max-width:720px;margin:0 auto;padding:0 18px}
+.view{display:none;flex-direction:column;height:100%}
+.view.active{display:flex}
+
+/* Header */
+.hd{display:flex;align-items:center;justify-content:space-between;padding:16px 0 12px;padding-top:calc(16px + env(safe-area-inset-top,0px));flex-shrink:0}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:38px;height:38px;color:var(--accent)}
+.brand-mark svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.brand-name{font-family:var(--fd);font-weight:700;font-size:20px;line-height:1}
+.brand-name em{font-style:normal;color:var(--accent)}
+.brand-sub{font-family:var(--fm);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);margin-top:2px}
+.back{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--border);font-family:var(--fm);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);font-weight:600}
+.back:active{background:var(--surface-2)}
+
+/* Welcome */
+.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:20px 0}
+.welcome svg{width:130px;height:98px;color:var(--accent)}
+.welcome svg path,.welcome svg rect{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.welcome .roof{fill:var(--accent-soft)}
+.welcome .door{fill:var(--accent);stroke:none}
+.welcome h1{font-family:var(--fd);font-size:32px;line-height:1.1;letter-spacing:-.02em}
+.welcome h1 em{font-style:italic;color:var(--accent)}
+.welcome p{color:var(--text-2);font-size:14.5px;max-width:42ch}
+.welcome input{width:100%;max-width:380px;padding:14px 18px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);font-size:15px;text-align:center;margin-top:6px}
+.welcome input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.welcome button{width:100%;max-width:380px;padding:15px;border-radius:var(--r);background:var(--accent);color:#fff;font-weight:600;font-size:15px;box-shadow:0 4px 12px var(--accent-glow)}
+.welcome button:disabled{background:var(--surface-3);color:var(--text-3);box-shadow:none;cursor:not-allowed}
+.welcome button:active:not(:disabled){background:var(--accent-dark)}
+
+/* Peer list */
+.peers{flex:1;overflow-y:auto;padding:8px 0;display:flex;flex-direction:column;gap:10px}
+.empty{display:flex;flex-direction:column;align-items:center;gap:12px;padding:60px 20px;text-align:center;color:var(--text-3)}
+.spinner{width:34px;height:34px;border:3px solid var(--surface-3);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-title{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--text-2)}
+.empty-sub{font-size:13px;max-width:32ch}
+.peer{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--border);border-radius:var(--r-lg);background:var(--surface);cursor:pointer;transition:all .2s;box-shadow:0 1px 2px rgba(44,35,26,.03)}
+.peer:active{background:var(--surface-2);transform:scale(.99)}
+.peer.online{border-color:var(--border-hi);box-shadow:0 0 0 3px var(--accent-soft)}
+.peer-avatar{width:44px;height:44px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-family:var(--fd);font-weight:700;font-size:19px;flex-shrink:0}
+.peer.online .peer-avatar{background:var(--accent);color:#fff;box-shadow:0 0 12px var(--accent-glow)}
+.peer-body{flex:1;min-width:0}
+.peer-name{font-weight:600;font-size:15px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.peer-status{font-family:var(--fm);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-top:2px}
+.peer.online .peer-status{color:var(--ok)}
+.peer-badge{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);flex-shrink:0;animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.4}}
+
+/* Chat */
+.chat-head{display:flex;align-items:center;justify-content:space-between;padding:12px 0 14px;border-bottom:1px solid var(--border);margin-bottom:14px;flex-shrink:0}
+.chat-head-info{display:flex;align-items:center;gap:12px;min-width:0}
+.chat-head-avatar{width:38px;height:38px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-family:var(--fd);font-weight:700;font-size:16px;flex-shrink:0}
+.chat-head-name{font-family:var(--fd);font-weight:700;font-size:18px;line-height:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chat-head-status{font-family:var(--fm);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ok);margin-top:3px}
+.chat-log{flex:1;overflow-y:auto;padding:6px 2px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:82%;padding:11px 15px;border-radius:16px;font-size:14.5px;line-height:1.5;word-break:break-word;animation:in .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg .who{font-family:var(--fm);font-size:9.5px;letter-spacing:.06em;font-weight:700;opacity:.8;margin-bottom:3px;display:block;text-transform:uppercase}
+.msg.mine{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:5px;box-shadow:0 2px 8px var(--accent-glow)}
+.msg.mine .who{color:rgba(255,255,255,.85)}
+.msg.other{align-self:flex-start;background:var(--surface-2);color:var(--text);border-bottom-left-radius:5px}
+.msg.other .who{color:var(--accent-dark)}
+.composer{display:flex;gap:8px;padding:12px 0;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--border);flex-shrink:0}
+.composer input{flex:1;padding:13px 16px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);font-size:15px;transition:border-color .3s,box-shadow .3s}
+.composer input:focus{border-color:var(--border-hi);box-shadow:0 0 0 3px var(--accent-soft)}
+.send{width:48px;height:48px;flex-shrink:0;border-radius:var(--r);background:var(--accent);color:#fff;display:grid;place-items:center;box-shadow:0 4px 12px var(--accent-glow);transition:all .2s}
+.send:active:not(:disabled){background:var(--accent-dark);transform:scale(.96)}
+.send:disabled{background:var(--surface-3);color:var(--text-3);box-shadow:none;cursor:not-allowed}
+.send svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="app">
+
+<!-- WELCOME -->
+<section class="view active" id="v-welcome">
+  <div class="welcome">
+    <svg viewBox="0 0 200 150"><path class="roof" d="M15 72 100 20l85 52"/><path d="M30 68v70h140V68"/><rect class="door" x="86" y="92" width="28" height="46" rx="2"/><rect x="46" y="80" width="22" height="22" rx="2"/><rect x="132" y="80" width="22" height="22" rx="2"/></svg>
+    <h1>Bienvenue à <em>la maison.</em></h1>
+    <p>Sans internet, sans serveur. Votre nom permettra à votre famille de vous reconnaître.</p>
+    <input id="name" placeholder="Votre nom (ex: Maman, Ahmed…)" maxlength="30">
+    <button id="enter" disabled>Entrer dans la maison</button>
+  </div>
+</section>
+
+<!-- PEERS -->
+<section class="view" id="v-peers">
+  <div class="hd">
+    <div class="brand">
+      <div class="brand-mark"><svg viewBox="0 0 100 100"><path d="M22 48 50 24l28 24v32a4 4 0 0 1-4 4H26a4 4 0 0 1-4-4z"/><path d="M42 84V62h16v22"/><path d="M62 32V22h6v16"/></svg></div>
+      <div><div class="brand-name">DAR<em>88</em></div><div class="brand-sub">La maison de la famille</div></div>
+    </div>
+    <button class="back" id="leave">Quitter</button>
+  </div>
+  <div class="peers" id="peers"></div>
+</section>
+
+<!-- CHAT -->
+<section class="view" id="v-chat">
+  <div class="chat-head">
+    <div class="chat-head-info">
+      <div class="chat-head-avatar" id="chat-avatar">?</div>
+      <div style="min-width:0">
+        <div class="chat-head-name" id="chat-name">—</div>
+        <div class="chat-head-status">En ligne · LAN</div>
+      </div>
+    </div>
+    <button class="back" id="back">← Retour</button>
+  </div>
+  <div class="chat-log" id="log"></div>
+  <div class="composer">
+    <input id="msg" placeholder="Écrivez à la famille…" maxlength="2000" autocomplete="off">
+    <button class="send" id="send" disabled><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div>
+</section>
+
+</div>
+<script>
+'use strict';
+
+var $=function(id){return document.getElementById(id)};
+var vWelcome=$('v-welcome'),vPeers=$('v-peers'),vChat=$('v-chat');
+var nameInput=$('name'),enterBtn=$('enter'),leaveBtn=$('leave');
+var peersList=$('peers'),log=$('log'),msgInput=$('msg'),sendBtn=$('send');
+var chatName=$('chat-name'),chatAvatar=$('chat-avatar'),backBtn=$('back');
+
+var myName='';
+var peers={};              // id -> {name, el, lastActivity}
+var activePeerId=null;
+var conversations={};      // peerId -> array of {from, text, ts}
+var unread={};             // peerId -> count
+
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function initials(n){var w=String(n).trim().split(/\s+/);return ((w[0]||'?')[0]+((w[1]||'')[0]||'')).toUpperCase()}
+
+function show(view){
+  [vWelcome,vPeers,vChat].forEach(function(v){v.classList.remove('active')});
+  view.classList.add('active');
+}
+
+function setActivePeer(id){
+  activePeerId=id;
+  var p=peers[id];
+  if(!p)return;
+  chatName.textContent=p.name;
+  chatAvatar.textContent=initials(p.name);
+  unread[id]=0;
+  renderPeerList();
+  renderLog();
+  msgInput.value='';
+  msgInput.focus();
+  show(vChat);
+}
+
+function renderPeerList(){
+  peersList.innerHTML='';
+  var ids=Object.keys(peers);
+  if(ids.length===0){
+    var empty=document.createElement('div');
+    empty.className='empty';
+    empty.innerHTML='<div class="spinner"></div><div class="empty-title">Recherche en cours…</div><div class="empty-sub">Tous les appareils du foyer apparaîtront ici automatiquement. Assurez-vous d\'être sur le même réseau Wi-Fi ou hotspot.</div>';
+    peersList.appendChild(empty);
+    return;
+  }
+  ids.forEach(function(id){
+    var p=peers[id];
+    var el=document.createElement('div');
+    el.className='peer online';
+    var initial=initials(p.name);
+    var badge=(unread[id]||0)>0?'<div class="peer-badge"></div>':'';
+    el.innerHTML=
+      '<div class="peer-avatar">'+esc(initial)+'</div>'+
+      '<div class="peer-body"><div class="peer-name">'+esc(p.name)+'</div><div class="peer-status">En ligne · appuyez pour discuter</div></div>'+
+      badge;
+    el.addEventListener('click',function(){setActivePeer(id)});
+    peersList.appendChild(el);
+  });
+}
+
+function renderLog(){
+  log.innerHTML='';
+  var arr=conversations[activePeerId]||[];
+  arr.forEach(function(m){
+    var el=document.createElement('div');
+    el.className='msg '+(m.from==='me'?'mine':'other');
+    var who=m.from==='me'?myName:m.fromName;
+    el.innerHTML='<span class="who">'+esc(who)+'</span>'+esc(m.text);
+    log.appendChild(el);
+  });
+  log.scrollTop=log.scrollHeight;
+}
+
+/* NATIVE → JS callbacks */
+window.onPeer=function(id,name){
+  peers[id]={name:name,lastActivity:Date.now()};
+  renderPeerList();
+};
+window.onPeerGone=function(id){
+  delete peers[id];
+  if(activePeerId===id){activePeerId=null;show(vPeers);renderPeerList();return}
+  renderPeerList();
+};
+window.onMessage=function(fromId,fromName,text){
+  if(!conversations[fromId])conversations[fromId]=[];
+  conversations[fromId].push({from:'them',fromName:fromName,text:text,ts:Date.now()});
+  if(fromId===activePeerId){renderLog()}
+  else{
+    unread[fromId]=(unread[fromId]||0)+1;
+    if(peers[fromId]){renderPeerList()}
+  }
+};
+
+/* UI events */
+nameInput.addEventListener('input',function(){
+  enterBtn.disabled=!nameInput.value.trim();
+});
+nameInput.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&nameInput.value.trim())enterBtn.click();
+});
+enterBtn.addEventListener('click',function(){
+  myName=nameInput.value.trim().slice(0,30);
+  if(!myName)return;
+  if(window.Android&&Android.start){Android.start(myName)}
+  show(vPeers);
+  renderPeerList();
+});
+leaveBtn.addEventListener('click',function(){
+  if(window.Android&&Android.stop){Android.stop()}
+  peers={};conversations={};unread={};activePeerId=null;
+  show(vWelcome);
+});
+backBtn.addEventListener('click',function(){
+  activePeerId=null;
+  renderPeerList();
+  show(vPeers);
+});
+msgInput.addEventListener('input',function(){
+  sendBtn.disabled=!msgInput.value.trim();
+});
+sendBtn.addEventListener('click',sendMessage);
+msgInput.addEventListener('keydown',function(e){
+  if(e.key==='Enter'){e.preventDefault();sendMessage()}
+});
+function sendMessage(){
+  var text=msgInput.value.trim();
+  if(!text||!activePeerId)return;
+  if(window.Android&&Android.send){Android.send(activePeerId,text)}
+  if(!conversations[activePeerId])conversations[activePeerId]=[];
+  conversations[activePeerId].push({from:'me',fromName:myName,text:text,ts:Date.now()});
+  msgInput.value='';
+  sendBtn.disabled=true;
+  renderLog();
+}
+</script>
+</body>
+</html>
