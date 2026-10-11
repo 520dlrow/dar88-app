@@ -5,42 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>DAR88</title>
 <style>
-/* ==========================================================
-   THEMES — 4 identities
-   ========================================================== */
-:root, html[data-theme="creme"]{
-  --bg:#faf6ec;--bg-2:#f3ecdc;--surface:#fff;--surface-2:#f2ead9;--surface-3:#e9dfc9;
-  --border:rgba(74,51,32,.12);--border-hi:rgba(193,104,63,.55);
-  --text:#2c231a;--text-2:#6e5f4d;--text-3:#a3937e;
-  --accent:#c1683f;--accent-dark:#9d4f2c;--accent-soft:rgba(193,104,63,.10);--accent-glow:rgba(193,104,63,.22);
-  --ok:#6b8b5a;--r:12px;--r-lg:18px;
-  --fd:Georgia,serif;--fb:system-ui,sans-serif;--fm:ui-monospace,Menlo,monospace;
-}
-html[data-theme="nuit"]{
-  --bg:#14110d;--bg-2:#1c1813;--surface:#221c15;--surface-2:#2a2318;--surface-3:#332a1d;
-  --border:rgba(232,216,184,.12);--border-hi:rgba(212,162,74,.60);
-  --text:#ece2c8;--text-2:#a89878;--text-3:#6b6048;
-  --accent:#d4a24a;--accent-dark:#b8862e;--accent-soft:rgba(212,162,74,.12);--accent-glow:rgba(212,162,74,.30);
-  --ok:#8dbf7a;--r:12px;--r-lg:18px;
-  --fd:Georgia,serif;--fb:system-ui,sans-serif;--fm:ui-monospace,Menlo,monospace;
-}
-html[data-theme="foret"]{
-  --bg:#f0f5ee;--bg-2:#e3ecdf;--surface:#fff;--surface-2:#e8f0e3;--surface-3:#d7e3d0;
-  --border:rgba(40,60,35,.14);--border-hi:rgba(74,124,72,.55);
-  --text:#1e2b1c;--text-2:#4a5e46;--text-3:#7e9179;
-  --accent:#4a7c48;--accent-dark:#355c33;--accent-soft:rgba(74,124,72,.10);--accent-glow:rgba(74,124,72,.24);
-  --ok:#4a7c48;--r:12px;--r-lg:18px;
-  --fd:Georgia,serif;--fb:system-ui,sans-serif;--fm:ui-monospace,Menlo,monospace;
-}
-html[data-theme="ocean"]{
-  --bg:#eef3f8;--bg-2:#dde7f0;--surface:#fff;--surface-2:#e2eaf2;--surface-3:#cfdbe6;
-  --border:rgba(30,50,70,.14);--border-hi:rgba(46,110,168,.55);
-  --text:#152a3d;--text-2:#485e75;--text-3:#7c90a3;
-  --accent:#2e6ea8;--accent-dark:#1f5182;--accent-soft:rgba(46,110,168,.10);--accent-glow:rgba(46,110,168,.24);
-  --ok:#3a9b78;--r:12px;--r-lg:18px;
-  --fd:Georgia,serif;--fb:system-ui,sans-serif;--fm:ui-monospace,Menlo,monospace;
-}
-
+:root,html[data-theme="creme"]{--bg:#faf6ec;--bg-2:#f3ecdc;--surface:#fff;--surface-2:#f2ead9;--surface-3:#e9dfc9;--border:rgba(74,51,32,.12);--border-hi:rgba(193,104,63,.55);--text:#2c231a;--text-2:#6e5f4d;--text-3:#a3937e;--accent:#c1683f;--accent-dark:#9d4f2c;--accent-soft:rgba(193,104,63,.10);--accent-glow:rgba(193,104,63,.22);--ok:#6b8b5a;--r:12px;--r-lg:18px;--fd:Georgia,serif;--fb:system-ui,sans-serif;--fm:ui-monospace,Menlo,monospace}
+html[data-theme="nuit"]{--bg:#14110d;--bg-2:#1c1813;--surface:#221c15;--surface-2:#2a2318;--surface-3:#332a1d;--border:rgba(232,216,184,.12);--border-hi:rgba(212,162,74,.60);--text:#ece2c8;--text-2:#a89878;--text-3:#6b6048;--accent:#d4a24a;--accent-dark:#b8862e;--accent-soft:rgba(212,162,74,.12);--accent-glow:rgba(212,162,74,.30);--ok:#8dbf7a;--r:12px;--r-lg:18px;--fd:Georgia,serif;--fb:system-ui,sans-serif;--fm:ui-monospace,Menlo,monospace}
+html[data-theme="foret"]{--bg:#f0f5ee;--bg-2:#e3ecdf;--surface:#fff;--surface-2:#e8f0e3;--surface-3:#d7e3d0;--border:rgba(40,60,35,.14);--border-hi:rgba(74,124,72,.55);--text:#1e2b1c;--text-2:#4a5e46;--text-3:#7e9179;--accent:#4a7c48;--accent-dark:#355c33;--accent-soft:rgba(74,124,72,.10);--accent-glow:rgba(74,124,72,.24);--ok:#4a7c48;--r:12px;--r-lg:18px;--fd:Georgia,serif;--fb:system-ui,sans-serif;--fm:ui-monospace,Menlo,monospace}
+html[data-theme="ocean"]{--bg:#eef3f8;--bg-2:#dde7f0;--surface:#fff;--surface-2:#e2eaf2;--surface-3:#cfdbe6;--border:rgba(30,50,70,.14);--border-hi:rgba(46,110,168,.55);--text:#152a3d;--text-2:#485e75;--text-3:#7c90a3;--accent:#2e6ea8;--accent-dark:#1f5182;--accent-soft:rgba(46,110,168,.10);--accent-glow:rgba(46,110,168,.24);--ok:#3a9b78;--r:12px;--r-lg:18px;--fd:Georgia,serif;--fb:system-ui,sans-serif;--fm:ui-monospace,Menlo,monospace}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--fb);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow:hidden;transition:background .35s,color .35s}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
@@ -49,8 +17,6 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
 .app{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;max-width:720px;margin:0 auto;padding:0 18px}
 .view{display:none;flex-direction:column;height:100%}
 .view.active{display:flex}
-
-/* Header */
 .hd{display:flex;align-items:center;justify-content:space-between;padding:16px 0 12px;padding-top:calc(16px + env(safe-area-inset-top,0px));flex-shrink:0}
 .brand{display:flex;align-items:center;gap:12px;min-width:0}
 .brand-mark{width:38px;height:38px;color:var(--accent);flex-shrink:0}
@@ -61,13 +27,10 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
 .icon-btn{width:42px;height:42px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:grid;place-items:center;flex-shrink:0;transition:transform .2s,background .2s}
 .icon-btn:active{transform:scale(.94);background:var(--surface-2)}
 .icon-btn svg{width:19px;height:19px;fill:none;stroke:var(--text-2);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-
-/* Welcome */
 .welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:20px 0}
-.welcome svg.house{width:130px;height:98px;color:var(--accent)}
-.welcome svg.house path,.welcome svg.house rect{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.welcome svg.house .roof{fill:var(--accent-soft)}
-.welcome svg.house .door{fill:var(--accent);stroke:none}
+.welcome .profile-pick{width:110px;height:110px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-family:var(--fd);font-weight:700;font-size:44px;position:relative;cursor:pointer;box-shadow:0 6px 20px var(--accent-glow);overflow:hidden}
+.welcome .profile-pick img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.welcome .profile-pick::after{content:'📷';position:absolute;bottom:-2px;right:-2px;width:34px;height:34px;background:var(--surface);color:var(--accent);border:2px solid var(--bg);border-radius:50%;display:grid;place-items:center;font-size:15px}
 .welcome h1{font-family:var(--fd);font-size:32px;line-height:1.1;letter-spacing:-.02em}
 .welcome h1 em{font-style:italic;color:var(--accent)}
 .welcome p{color:var(--text-2);font-size:14.5px;max-width:42ch}
@@ -76,28 +39,25 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
 .welcome button{width:100%;max-width:380px;padding:15px;border-radius:var(--r);background:var(--accent);color:#fff;font-weight:600;font-size:15px;box-shadow:0 4px 12px var(--accent-glow)}
 .welcome button:disabled{background:var(--surface-3);color:var(--text-3);box-shadow:none;cursor:not-allowed}
 .welcome button:active:not(:disabled){background:var(--accent-dark)}
-
-/* Online strip */
 .online-strip{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px;flex-shrink:0;scrollbar-width:none}
 .online-strip::-webkit-scrollbar{display:none}
-.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;font-family:var(--fd);font-weight:700;font-size:15px;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.12);position:relative}
-.avatar.me::after{content:'';position:absolute;bottom:-1px;right:-1px;width:11px;height:11px;border-radius:50%;background:var(--ok);border:2px solid var(--bg)}
+.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;font-family:var(--fd);font-weight:700;font-size:15px;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.12);position:relative;overflow:hidden}
+.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.avatar.me::after{content:'';position:absolute;bottom:-1px;right:-1px;width:11px;height:11px;border-radius:50%;background:var(--ok);border:2px solid var(--bg);z-index:2}
 .online-count{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--border);font-family:var(--fm);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);flex-shrink:0;font-weight:600}
 .online-count .dot{width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 6px var(--ok);animation:pulse 1.8s ease-in-out infinite}
 @keyframes pulse{50%{opacity:.4}}
-
-/* Chat log */
 .chat{flex:1;display:flex;flex-direction:column;min-height:0}
 .log{flex:1;overflow-y:auto;padding:8px 2px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
 .welcome-banner{align-self:center;display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 22px;background:var(--accent-soft);border:1px solid var(--border-hi);border-radius:var(--r-lg);color:var(--accent-dark);font-family:var(--fd);font-size:14.5px;font-weight:700;text-align:center;max-width:88%;margin:6px 0}
 .welcome-banner .house-mini{width:34px;height:26px;color:var(--accent)}
 .welcome-banner .house-mini svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .welcome-banner .tag{font-family:var(--fm);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3);font-weight:500}
-
 .msg-row{display:flex;gap:8px;align-items:flex-end;max-width:84%;animation:in .3s cubic-bezier(.2,.8,.2,1)}
 .msg-row.mine{align-self:flex-end;flex-direction:row-reverse}
 .msg-row.other{align-self:flex-start}
-.msg-avatar{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;font-family:var(--fd);font-weight:700;font-size:13px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.msg-avatar{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;font-family:var(--fd);font-weight:700;font-size:13px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.12);overflow:hidden;position:relative}
+.msg-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .msg-bubble{padding:10px 14px;border-radius:16px;font-size:14.5px;line-height:1.45;word-break:break-word;position:relative}
 .msg-row.mine .msg-bubble{background:var(--accent);color:#fff;border-bottom-right-radius:5px;box-shadow:0 2px 8px var(--accent-glow)}
 .msg-row.other .msg-bubble{background:var(--surface-2);color:var(--text);border-bottom-left-radius:5px}
@@ -106,8 +66,6 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
 .msg-row.other .msg-who{color:var(--accent-dark)}
 .msg-time{display:block;font-family:var(--fm);font-size:9px;letter-spacing:.05em;opacity:.55;margin-top:3px}
 @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-
-/* Composer */
 .composer{display:flex;gap:8px;padding:12px 0;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--border);flex-shrink:0}
 .composer input{flex:1;padding:13px 16px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);font-size:15px;transition:border-color .3s,box-shadow .3s}
 .composer input:focus{border-color:var(--border-hi);box-shadow:0 0 0 3px var(--accent-soft)}
@@ -115,8 +73,6 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
 .send:active:not(:disabled){background:var(--accent-dark);transform:scale(.96)}
 .send:disabled{background:var(--surface-3);color:var(--text-3);box-shadow:none;cursor:not-allowed}
 .send svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-
-/* Settings */
 .settings{flex:1;overflow-y:auto;padding:6px 0}
 .settings h2{font-family:var(--fd);font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
 .settings .sub{color:var(--text-2);font-size:13.5px;margin-bottom:22px}
@@ -127,6 +83,9 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
 .set-row-desc{font-size:12px;color:var(--text-2);margin-top:2px}
 .set-input{flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--bg);font-size:14.5px;text-align:right;max-width:200px}
 .set-input:focus{border-color:var(--accent);background:var(--surface)}
+.profile-edit{width:60px;height:60px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-family:var(--fd);font-weight:700;font-size:22px;position:relative;cursor:pointer;overflow:hidden;flex-shrink:0}
+.profile-edit img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.profile-edit::after{content:'📷';position:absolute;bottom:-4px;right:-4px;width:22px;height:22px;background:var(--surface);border:1px solid var(--border);border-radius:50%;display:grid;place-items:center;font-size:10px;z-index:2}
 .switch{position:relative;width:46px;height:26px;border-radius:999px;background:var(--surface-3);transition:background .25s;flex-shrink:0}
 .switch.on{background:var(--accent)}
 .switch::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .25s cubic-bezier(.2,.9,.3,1.2);box-shadow:0 2px 4px rgba(0,0,0,.2)}
@@ -140,21 +99,23 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
 .swatch-nuit{background:linear-gradient(135deg,#14110d 50%,#d4a24a 50%)}
 .swatch-foret{background:linear-gradient(135deg,#f0f5ee 50%,#4a7c48 50%)}
 .swatch-ocean{background:linear-gradient(135deg,#eef3f8 50%,#2e6ea8 50%)}
-
 .copyright{margin:24px 0 30px;padding:20px 16px;border-top:1px solid var(--border);text-align:center;font-family:var(--fm);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);line-height:1.8}
 .copyright .brand-line{font-family:var(--fd);font-size:16px;font-weight:700;text-transform:none;letter-spacing:0;color:var(--text-2);margin-bottom:6px}
 .copyright .brand-line em{color:var(--accent);font-style:normal}
 .copyright a{color:var(--accent);text-decoration:none;word-break:break-all}
+input[type=file]{display:none}
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="app">
 
-<!-- WELCOME -->
 <section class="view active" id="v-welcome">
   <div class="welcome">
-    <svg class="house" viewBox="0 0 200 150"><path class="roof" d="M15 72 100 20l85 52"/><path d="M30 68v70h140V68"/><rect class="door" x="86" y="92" width="28" height="46" rx="2"/><rect x="46" y="80" width="22" height="22" rx="2"/><rect x="132" y="80" width="22" height="22" rx="2"/></svg>
+    <div class="profile-pick" id="w-avatar">
+      <span id="w-initials">?</span>
+      <img id="w-img" style="display:none">
+    </div>
     <h1>Bienvenue à <em>la maison.</em></h1>
     <p>Sans internet, sans serveur. Toute la famille dans une seule pièce.</p>
     <input id="w-name" placeholder="Votre nom (ex: Maman, Ahmed…)" maxlength="30">
@@ -162,16 +123,13 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
   </div>
 </section>
 
-<!-- CHAT -->
 <section class="view" id="v-chat">
   <div class="hd">
     <div class="brand">
       <div class="brand-mark"><svg viewBox="0 0 100 100"><path d="M22 48 50 24l28 24v32a4 4 0 0 1-4 4H26a4 4 0 0 1-4-4z"/><path d="M42 84V62h16v22"/><path d="M62 32V22h6v16"/></svg></div>
       <div style="min-width:0"><div class="brand-name">DAR<em>88</em></div><div class="brand-sub" id="hd-status">La maison</div></div>
     </div>
-    <button class="icon-btn" id="open-settings" aria-label="Paramètres">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    </button>
+    <button class="icon-btn" id="open-settings" aria-label="Paramètres"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
   </div>
   <div class="online-strip" id="online-strip"></div>
   <div class="chat">
@@ -183,32 +141,37 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
   </div>
 </section>
 
-<!-- SETTINGS -->
 <section class="view" id="v-settings">
   <div class="hd">
     <div class="brand">
       <div class="brand-mark"><svg viewBox="0 0 100 100"><path d="M22 48 50 24l28 24v32a4 4 0 0 1-4 4H26a4 4 0 0 1-4-4z"/><path d="M42 84V62h16v22"/><path d="M62 32V22h6v16"/></svg></div>
       <div><div class="brand-name">Paramètres</div><div class="brand-sub">DAR88</div></div>
     </div>
-    <button class="icon-btn" id="close-settings" aria-label="Retour">
-      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-    </button>
+    <button class="icon-btn" id="close-settings" aria-label="Retour"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
   </div>
   <div class="settings">
     <h2>Réglages</h2>
     <p class="sub">Personnalisez la maison selon vos goûts.</p>
-
     <div class="set-group">
+      <div class="set-row">
+        <div class="profile-edit" id="set-avatar">
+          <span id="set-initials">?</span>
+          <img id="set-img" style="display:none">
+        </div>
+        <div style="flex:1;text-align:right">
+          <div class="set-row-label">Photo de profil</div>
+          <div class="set-row-desc">Appuyez pour changer</div>
+        </div>
+      </div>
       <div class="set-row">
         <div><div class="set-row-label">Votre nom</div><div class="set-row-desc">Visible par la famille</div></div>
         <input class="set-input" id="set-name" maxlength="30">
       </div>
       <div class="set-row">
         <div><div class="set-row-label">Sons</div><div class="set-row-desc">Retour tactile et alertes</div></div>
-        <button class="switch on" id="set-sound" aria-label="Sons"></button>
+        <button class="switch on" id="set-sound"></button>
       </div>
     </div>
-
     <div class="set-group">
       <div class="set-row" style="border-bottom:0;flex-direction:column;align-items:stretch;gap:0;padding-bottom:0">
         <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:6px">
@@ -222,7 +185,6 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
         </div>
       </div>
     </div>
-
     <div class="copyright">
       <div class="brand-line">DAR<em>88</em></div>
       © 2026 MC88 · Tous droits réservés<br>
@@ -232,170 +194,130 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
 </section>
 
 </div>
+<input type="file" id="pick-avatar" accept="image/*">
+<input type="file" id="pick-avatar-2" accept="image/*">
 <script>
 'use strict';
 var $=function(id){return document.getElementById(id)};
 var vWelcome=$('v-welcome'),vChat=$('v-chat'),vSettings=$('v-settings');
-var wName=$('w-name'),wEnter=$('w-enter');
+var wName=$('w-name'),wEnter=$('w-enter'),wAvatar=$('w-avatar'),wInitials=$('w-initials'),wImg=$('w-img');
 var log=$('log'),msgInput=$('msg'),sendBtn=$('send'),onlineStrip=$('online-strip'),hdStatus=$('hd-status');
 var setBtn=$('open-settings'),closeSetBtn=$('close-settings'),setName=$('set-name'),setSound=$('set-sound'),themesEl=$('themes');
+var setAvatar=$('set-avatar'),setInitials=$('set-initials'),setImg=$('set-img');
+var pickAvatar=$('pick-avatar'),pickAvatar2=$('pick-avatar-2');
 
-/* ---------- State ---------- */
 var myName='';
-var myId='';
-var peers={};           // id -> {name, color, lastSeen}
-var msgs=[];            // {from, name, text, ts, mine}
+var myAvatar='';        // data URL of thumbnail
+var myAvatarRaw='';     // base64 without data: prefix (for network)
+var peers={};
 var soundOn=true;
 var currentTheme='creme';
 
-/* ---------- Persist ---------- */
 function save(){
-  try{
-    localStorage.setItem('dar88',JSON.stringify({
-      name:myName,sound:soundOn,theme:currentTheme
-    }));
-  }catch(_){}
+  try{localStorage.setItem('dar88',JSON.stringify({name:myName,avatar:myAvatar,sound:soundOn,theme:currentTheme}))}catch(_){}
 }
 function load(){
   try{
     var s=JSON.parse(localStorage.getItem('dar88')||'{}');
     if(s.name){myName=s.name;wName.value=s.name;wEnter.disabled=false}
+    if(s.avatar){myAvatar=s.avatar;myAvatarRaw=s.avatar.split(',')[1]||'';updateMyAvatarUI()}
     if(typeof s.sound==='boolean')soundOn=s.sound;
     if(s.theme)currentTheme=s.theme;
   }catch(_){}
 }
 load();
 
-/* ---------- Themes ---------- */
+function updateMyAvatarUI(){
+  var n=myName||wName.value||'?';
+  var ini=initials(n);
+  [wInitials,setInitials].forEach(function(el){el.textContent=ini});
+  [wImg,setImg].forEach(function(img){
+    if(myAvatar){img.src=myAvatar;img.style.display='block'}
+    else{img.style.display='none'}
+  });
+}
+
 function applyTheme(name){
   currentTheme=name;
   document.documentElement.setAttribute('data-theme',name);
-  document.querySelectorAll('.theme-swatch').forEach(function(el){
-    el.classList.toggle('active',el.dataset.theme===name);
-  });
+  document.querySelectorAll('.theme-swatch').forEach(function(el){el.classList.toggle('active',el.dataset.theme===name)});
   save();
 }
 applyTheme(currentTheme);
-themesEl.addEventListener('click',function(e){
-  var b=e.target.closest('.theme-swatch');
-  if(!b)return;
-  applyTheme(b.dataset.theme);
-  playSound('tap');
-});
+themesEl.addEventListener('click',function(e){var b=e.target.closest('.theme-swatch');if(!b)return;applyTheme(b.dataset.theme);playSound('tap')});
 
-/* ---------- Sounds ---------- */
 var audioCtx=null;
-function initAudio(){
-  if(audioCtx)return;
-  try{audioCtx=new (window.AudioContext||window.webkitAudioContext)()}catch(_){}
-}
-function beep(freq,dur,vol,delay){
-  if(!soundOn||!audioCtx)return;
-  var t=audioCtx.currentTime+(delay||0);
-  var osc=audioCtx.createOscillator();
-  var g=audioCtx.createGain();
-  osc.type='sine';
-  osc.frequency.setValueAtTime(freq,t);
-  g.gain.setValueAtTime(0.0001,t);
-  g.gain.exponentialRampToValueAtTime(vol,t+0.008);
-  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
-  osc.connect(g);g.connect(audioCtx.destination);
-  osc.start(t);osc.stop(t+dur+0.03);
-}
-function playSound(kind){
-  initAudio();
-  if(kind==='tap'){beep(1400,0.025,0.06)}
-  else if(kind==='send'){beep(880,0.06,0.08,0);beep(1180,0.09,0.07,0.06)}
-  else if(kind==='receive'){beep(660,0.07,0.08,0);beep(990,0.11,0.07,0.07)}
-}
+function initAudio(){if(audioCtx)return;try{audioCtx=new (window.AudioContext||window.webkitAudioContext)()}catch(_){}}
+function beep(f,d,v,delay){if(!soundOn||!audioCtx)return;var t=audioCtx.currentTime+(delay||0);var o=audioCtx.createOscillator();var g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(v,t+0.008);g.gain.exponentialRampToValueAtTime(0.0001,t+d);o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+d+0.03)}
+function playSound(k){initAudio();if(k==='tap')beep(1400,0.025,0.06);else if(k==='send'){beep(880,0.06,0.08,0);beep(1180,0.09,0.07,0.06)}else if(k==='receive'){beep(660,0.07,0.08,0);beep(990,0.11,0.07,0.07)}}
 
-/* ---------- Colors for avatars ---------- */
-var AV_COLORS=['#c1683f','#7a5ab8','#4a7c48','#2e6ea8','#b04632','#c98a2a','#a05a7a','#3d7a82','#8a5a2e','#5a7a3a'];
-function colorFor(name){
-  var h=0;
-  for(var i=0;i<name.length;i++)h=(h*31+name.charCodeAt(i))>>>0;
-  return AV_COLORS[h%AV_COLORS.length];
-}
-function initials(n){
-  var w=String(n).trim().split(/\s+/);
-  return ((w[0]||'?')[0]+((w[1]||'')[0]||'')).toUpperCase();
-}
+function initials(n){var w=String(n||'?').trim().split(/\s+/);return ((w[0]||'?')[0]+((w[1]||'')[0]||'')).toUpperCase()}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function timeStr(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
-
-/* ---------- Views ---------- */
 function show(v){[vWelcome,vChat,vSettings].forEach(function(x){x.classList.remove('active')});v.classList.add('active')}
 
-/* ---------- Welcome ---------- */
-wName.addEventListener('input',function(){wEnter.disabled=!wName.value.trim()});
+wName.addEventListener('input',function(){myName=wName.value.trim();wEnter.disabled=!myName;updateMyAvatarUI()});
 wName.addEventListener('keydown',function(e){if(e.key==='Enter'&&wName.value.trim())wEnter.click()});
 wEnter.addEventListener('click',function(){
   initAudio();
   myName=wName.value.trim().slice(0,30);
   if(!myName)return;
   save();
-  if(window.Android&&Android.start){Android.start(myName)}
-  myId=myName;   // will be replaced by native on first peer
-  show(vChat);
-  addWelcome();
-  renderOnline();
-  playSound('tap');
+  if(window.Android&&Android.start){Android.start(myName,myAvatarRaw)}
+  show(vChat);addWelcome();renderOnline();playSound('tap');
 });
 
-/* ---------- Welcome banner ---------- */
 function addWelcome(){
-  var el=document.createElement('div');
-  el.className='welcome-banner';
+  var el=document.createElement('div');el.className='welcome-banner';
   el.innerHTML='<div class="house-mini"><svg viewBox="0 0 200 150"><path d="M15 72 100 20l85 52"/><path d="M30 68v70h140V68"/><rect x="86" y="92" width="28" height="46" rx="2" fill="currentColor" stroke="none"/></svg></div><div>Bienvenue à la maison</div><div class="tag">La famille est réunie</div>';
   log.appendChild(el);
 }
 
-/* ---------- Messages ---------- */
+function avatarHTML(name,avatar,cls){
+  var ini=initials(name);
+  var bg=colorFor(name);
+  var img=avatar?'<img src="data:image/jpeg;base64,'+avatar+'">':'';
+  return '<div class="'+cls+'" style="background:'+bg+'"><span>'+ini+'</span>'+img+'</div>';
+}
+function colorFor(name){var h=0;for(var i=0;i<name.length;i++)h=(h*31+name.charCodeAt(i))>>>0;var c=['#c1683f','#7a5ab8','#4a7c48','#2e6ea8','#b04632','#c98a2a','#a05a7a','#3d7a82','#8a5a2e','#5a7a3a'];return c[h%c.length]}
+
 function addMsg(m){
   var row=document.createElement('div');
   row.className='msg-row '+(m.mine?'mine':'other');
   var av=document.createElement('div');
   av.className='msg-avatar';
   av.style.background=colorFor(m.name);
-  av.textContent=initials(m.name);
+  var img=m.avatar?'<img src="data:image/jpeg;base64,'+m.avatar+'">':'';
+  av.innerHTML='<span>'+initials(m.name)+'</span>'+img;
   var bubble=document.createElement('div');
   bubble.className='msg-bubble';
   bubble.innerHTML='<span class="msg-who">'+esc(m.name)+'</span>'+esc(m.text)+'<span class="msg-time">'+timeStr()+'</span>';
-  row.appendChild(av);
-  row.appendChild(bubble);
-  log.appendChild(row);
-  log.scrollTop=log.scrollHeight;
+  row.appendChild(av);row.appendChild(bubble);
+  log.appendChild(row);log.scrollTop=log.scrollHeight;
 }
 
 function renderOnline(){
   onlineStrip.innerHTML='';
   var count=Object.keys(peers).length+1;
-  var cnt=document.createElement('div');
-  cnt.className='online-count';
+  var cnt=document.createElement('div');cnt.className='online-count';
   cnt.innerHTML='<span class="dot"></span>'+count+(count>1?' personnes':' personne');
   onlineStrip.appendChild(cnt);
-
-  // My avatar
-  var mine=document.createElement('div');
-  mine.className='avatar me';
-  mine.style.background=colorFor(myName);
-  mine.textContent=initials(myName);
-  mine.title=myName+' (vous)';
-  onlineStrip.appendChild(mine);
-
+  var me=document.createElement('div');me.className='avatar me';
+  me.style.background=colorFor(myName);
+  me.innerHTML='<span>'+initials(myName)+'</span>'+(myAvatar?'<img src="'+myAvatar+'">':'');
+  me.title=myName+' (vous)';
+  onlineStrip.appendChild(me);
   Object.keys(peers).forEach(function(id){
     var p=peers[id];
-    var a=document.createElement('div');
-    a.className='avatar';
+    var a=document.createElement('div');a.className='avatar';
     a.style.background=colorFor(p.name);
-    a.textContent=initials(p.name);
+    a.innerHTML='<span>'+initials(p.name)+'</span>'+(p.avatar?'<img src="data:image/jpeg;base64,'+p.avatar+'">':'');
     a.title=p.name;
     onlineStrip.appendChild(a);
   });
   hdStatus.textContent='La maison · '+count+(count>1?' en ligne':'');
 }
 
-/* ---------- Composer ---------- */
 msgInput.addEventListener('input',function(){sendBtn.disabled=!msgInput.value.trim()});
 sendBtn.addEventListener('click',sendMsg);
 msgInput.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();sendMsg()}});
@@ -403,44 +325,62 @@ function sendMsg(){
   var text=msgInput.value.trim();
   if(!text||!myName)return;
   if(window.Android&&Android.send){Android.send(text)}
-  addMsg({name:myName,text:text,mine:true});
-  msgInput.value='';
-  sendBtn.disabled=true;
+  addMsg({name:myName,text:text,mine:true,avatar:myAvatarRaw});
+  msgInput.value='';sendBtn.disabled=true;
   playSound('send');
 }
 
-/* ---------- Settings ---------- */
 setBtn.addEventListener('click',function(){setName.value=myName;show(vSettings);playSound('tap')});
 closeSetBtn.addEventListener('click',function(){show(vChat);playSound('tap')});
-setName.addEventListener('input',function(){
-  var v=setName.value.trim().slice(0,30);
-  if(v){myName=v;save();renderOnline()}
-});
-setSound.addEventListener('click',function(){
-  soundOn=!soundOn;
-  setSound.classList.toggle('on',soundOn);
-  save();
-  if(soundOn)playSound('tap');
-});
+setName.addEventListener('input',function(){var v=setName.value.trim().slice(0,30);if(v){myName=v;save();renderOnline();updateMyAvatarUI()}});
+setSound.addEventListener('click',function(){soundOn=!soundOn;setSound.classList.toggle('on',soundOn);save();if(soundOn)playSound('tap')});
 
-/* ---------- Native callbacks ---------- */
-window.onPeer=function(id,name){
-  peers[id]={name:name,color:colorFor(name),lastSeen:Date.now()};
+/* Profile pic */
+wAvatar.addEventListener('click',function(){pickAvatar.click()});
+setAvatar.addEventListener('click',function(){pickAvatar2.click()});
+function handleFile(input){
+  var f=input.files&&input.files[0];
+  if(!f)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var img=new Image();
+    img.onload=function(){
+      var size=180;
+      var c=document.createElement('canvas');c.width=size;c.height=size;
+      var ctx=c.getContext('2d');
+      var min=Math.min(img.width,img.height);
+      var sx=(img.width-min)/2, sy=(img.height-min)/2;
+      ctx.drawImage(img,sx,sy,min,min,0,0,size,size);
+      var dataURL=c.toDataURL('image/jpeg',0.78);
+      myAvatar=dataURL;
+      myAvatarRaw=dataURL.split(',')[1];
+      updateMyAvatarUI();
+      save();
+      if(window.Android&&Android.start&&myName){Android.start(myName,myAvatarRaw)}
+      playSound('tap');
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(f);
+  input.value='';
+}
+pickAvatar.addEventListener('change',function(){handleFile(pickAvatar)});
+pickAvatar2.addEventListener('change',function(){handleFile(pickAvatar2)});
+
+window.onPeer=function(id,name,avatar){
+  peers[id]={name:name,avatar:avatar||'',lastSeen:Date.now()};
   renderOnline();
 };
-window.onPeerGone=function(id){
-  delete peers[id];
-  renderOnline();
-};
+window.onPeerGone=function(id){delete peers[id];renderOnline()};
 window.onMessage=function(fromId,fromName,text){
-  var mine=false;
-  if(fromId===myId||fromName===myName)mine=true;
-  addMsg({name:fromName,text:text,mine:mine});
-  if(!mine)playSound('receive');
+  if(fromId===myName)return; /* extra safety */
+  var p=peers[fromId];
+  var av=p?p.avatar:'';
+  addMsg({name:fromName,text:text,mine:false,avatar:av});
+  playSound('receive');
 };
 
-/* First-run: use my name as a temporary id */
-if(myName){wEnter.disabled=false}
+if(myName){wEnter.disabled=false;updateMyAvatarUI()}
 </script>
 </body>
 </html>
