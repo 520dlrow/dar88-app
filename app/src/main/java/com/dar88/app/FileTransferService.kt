@@ -38,7 +38,7 @@ class FileTransferService(
     private fun handleClient(client: Socket) {
         try {
             client.soTimeout = 20000
-            val reader = BufferedReader(InputStreamReader(client.getInputStream(), "UTF-8"))
+            val reader = BufferedReader(InputStreamReader(client.getInputStream(), Charsets.UTF_8))
             val header = reader.readLine() ?: return
             val parts = header.split("|")
             if (parts.size < 5 || parts[0] != MAGIC) return
@@ -70,8 +70,8 @@ class FileTransferService(
             socket.soTimeout = 20000
             val writer = socket.getOutputStream()
             val header = "$MAGIC|$fromId|$fromName|$type|${data.length}\n"
-            writer.write(header.toByteArray("UTF-8"))
-            writer.write(data.toByteArray("UTF-8"))
+            writer.write(header.toByteArray(Charsets.UTF_8))
+            writer.write(data.toByteArray(Charsets.UTF_8))
             writer.flush()
             socket.close()
             true
