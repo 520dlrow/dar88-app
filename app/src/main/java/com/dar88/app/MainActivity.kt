@@ -10,6 +10,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var webView: WebView
     private lateinit var udp: UdpService
     private var myName = ""
+    private var myAvatar = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +25,8 @@ class MainActivity : AppCompatActivity() {
         webView.loadUrl("file:///android_asset/index.html")
 
         udp = UdpService(
-            onPeer = { id, name ->
-                runOnUiThread { js("window.onPeer('${esc(id)}','${esc(name)}')") }
+            onPeer = { id, name, avatar ->
+                runOnUiThread { js("window.onPeer('${esc(id)}','${esc(name)}','${esc(avatar)}')") }
             },
             onPeerGone = { id ->
                 runOnUiThread { js("window.onPeerGone('${esc(id)}')") }
@@ -49,9 +50,10 @@ class MainActivity : AppCompatActivity() {
 
     inner class Bridge {
         @JavascriptInterface
-        fun start(name: String) {
+        fun start(name: String, avatar: String) {
             myName = name
-            udp.start(name)
+            myAvatar = avatar
+            udp.start(name, avatar)
         }
 
         @JavascriptInterface
