@@ -19,6 +19,7 @@ class UdpService(
         const val SEP = "\u0001"
         const val HELLO_INTERVAL = 2000L
         const val PEER_TIMEOUT = 8000L
+        const val SEEN_MAX = 100
     }
 
     private val myId = UUID.randomUUID().toString().take(8)
@@ -26,6 +27,10 @@ class UdpService(
     @Volatile private var running = false
     private var socket: DatagramSocket? = null
     private val peers = mutableMapOf<String, PeerInfo>()
+
+    // Dedup: broadcast travels twice (global + subnet) so the same MSG can arrive twice
+    private val seenMessages = ArrayDeque<String>()
+    private val seenLock = Any()
 
     val id: String get() = myId
     fun getPeers(): List<PeerInfo> = peers.values.toList()
@@ -69,7 +74,6 @@ class UdpService(
     private fun broadcastLoop() {
         while (running) {
             try {
-                // Small HELLO — no avatar. This is what makes range work.
                 val msg = MAGIC + SEP + "HELLO" + SEP + myId + SEP + myName
                 broadcastBytes(msg.toByteArray(Charsets.UTF_8))
             } catch (e: Exception) { e.printStackTrace() }
@@ -78,9 +82,11 @@ class UdpService(
     }
 
     private fun broadcastBytes(bytes: ByteArray) {
+        // 1) Global broadcast
         try {
             socket?.send(DatagramPacket(bytes, bytes.size, InetAddress.getByName("255.255.255.255"), PORT))
         } catch (_: Exception) {}
+        // 2) Per-interface broadcast (needed on some Android versions)
         try {
             NetworkInterface.getNetworkInterfaces().toList().forEach { iface ->
                 if (!iface.isUp || iface.isLoopback) return@forEach
@@ -94,7 +100,8 @@ class UdpService(
     }
 
     fun sendToAll(fromName: String, text: String) {
-        val msg = MAGIC + SEP + "MSG" + SEP + myId + SEP + fromName + SEP + text
+        val msgId = UUID.randomUUID().toString().take(8)
+        val msg = MAGIC + SEP + "MSG" + SEP + myId + SEP + fromName + SEP + msgId + SEP + text
         broadcastBytes(msg.toByteArray(Charsets.UTF_8))
     }
 
@@ -112,6 +119,7 @@ class UdpService(
         val msg = String(packet.data, 0, packet.length, Charsets.UTF_8)
         val parts = msg.split(SEP)
         if (parts.size < 3 || parts[0] != MAGIC) return
+
         when (parts[1]) {
             "HELLO" -> {
                 if (parts.size < 4) return
@@ -122,9 +130,21 @@ class UdpService(
                 if (isNew) onPeer(id, name)
             }
             "MSG" -> {
-                if (parts.size < 5) return
-                val fromId = parts[2]; val fromName = parts[3]; val text = parts[4]
+                if (parts.size < 6) return
+                val fromId = parts[2]
+                val fromName = parts[3]
+                val msgId = parts[4]
+                // Rejoin in case user text contains SEP (defensive)
+                val text = parts.drop(5).joinToString(SEP)
                 if (fromId == myId) return
+
+                val key = fromId + ":" + msgId
+                synchronized(seenLock) {
+                    if (seenMessages.contains(key)) return
+                    seenMessages.addLast(key)
+                    if (seenMessages.size > SEEN_MAX) seenMessages.removeFirst()
+                }
+
                 peers[fromId]?.lastSeen = System.currentTimeMillis()
                 onMessage(fromId, fromName, text)
             }
@@ -134,6 +154,8 @@ class UdpService(
     fun stop() {
         running = false
         try { socket?.close() } catch (_: Exception) {}
-        socket = null; peers.clear()
+        socket = null
+        peers.clear()
+        synchronized(seenLock) { seenMessages.clear() }
     }
 }
