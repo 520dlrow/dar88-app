@@ -25,19 +25,13 @@ class MainActivity : AppCompatActivity() {
 
         udp = UdpService(
             onPeer = { id, name ->
-                runOnUiThread {
-                    js("window.onPeer('${esc(id)}','${esc(name)}')")
-                }
+                runOnUiThread { js("window.onPeer('${esc(id)}','${esc(name)}')") }
             },
             onPeerGone = { id ->
-                runOnUiThread {
-                    js("window.onPeerGone('${esc(id)}')")
-                }
+                runOnUiThread { js("window.onPeerGone('${esc(id)}')") }
             },
             onMessage = { fromId, fromName, text ->
-                runOnUiThread {
-                    js("window.onMessage('${esc(fromId)}','${esc(fromName)}','${esc(text)}')")
-                }
+                runOnUiThread { js("window.onMessage('${esc(fromId)}','${esc(fromName)}','${esc(text)}')") }
             }
         )
     }
@@ -61,8 +55,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         @JavascriptInterface
-        fun send(peerId: String, text: String) {
-            udp.sendMessage(peerId, myName, text)
+        fun send(text: String) {
+            udp.sendToAll(myName, text)
         }
 
         @JavascriptInterface
