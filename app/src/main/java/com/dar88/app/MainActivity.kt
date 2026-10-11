@@ -31,6 +31,9 @@ class MainActivity : AppCompatActivity() {
     private var recorder: MediaRecorder? = null
     private var recordFile: File? = null
 
+    // Peers we've already sent our avatar to — avoids re-sending every HELLO
+    private val avatarSentTo = mutableSetOf<String>()
+
     companion object {
         const val REQ_PICK = 1001
         const val REQ_MIC = 1002
@@ -49,10 +52,21 @@ class MainActivity : AppCompatActivity() {
         webView.loadUrl("file:///android_asset/index.html")
 
         udp = UdpService(
-            onPeer = { id, name, avatar ->
-                runOnUiThread { js("window.onPeer('${esc(id)}','${esc(name)}','${esc(avatar)}')") }
+            onPeer = { id, name ->
+                runOnUiThread { js("window.onPeer('${esc(id)}','${esc(name)}')") }
+                // Push my avatar to the new peer via TCP
+                if (myAvatar.isNotEmpty() && !avatarSentTo.contains(id)) {
+                    thread {
+                        val peer = udp.getPeers().find { it.id == id }
+                        peer?.address?.hostAddress?.let { host ->
+                            val ok = files.sendFile(host, udp.id, myName, "avatar", myAvatar)
+                            if (ok) avatarSentTo.add(id)
+                        }
+                    }
+                }
             },
             onPeerGone = { id ->
+                avatarSentTo.remove(id)
                 runOnUiThread { js("window.onPeerGone('${esc(id)}')") }
             },
             onMessage = { fromId, fromName, text ->
@@ -70,27 +84,15 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         try { recorder?.release() } catch (_: Exception) {}
-        udp.stop()
-        files.stop()
+        udp.stop(); files.stop()
     }
 
-    private fun js(code: String) {
-        webView.evaluateJavascript(code, null)
-    }
-
-    private fun esc(s: String): String {
-        return s.replace("\\", "\\\\")
-                .replace("'", "\\'")
-                .replace("\n", "\\n")
-                .replace("\r", "")
-    }
+    private fun js(code: String) { webView.evaluateJavascript(code, null) }
+    private fun esc(s: String): String = s.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n").replace("\r", "")
 
     private fun requestMic() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
-            != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                this, arrayOf(Manifest.permission.RECORD_AUDIO), REQ_MIC
-            )
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), REQ_MIC)
         }
     }
 
@@ -101,28 +103,16 @@ class MainActivity : AppCompatActivity() {
             thread {
                 try {
                     val input = contentResolver.openInputStream(uri) ?: return@thread
-                    val original = BitmapFactory.decodeStream(input)
-                    input.close()
+                    val original = BitmapFactory.decodeStream(input); input.close()
                     if (original == null) return@thread
-
                     val maxDim = 600
-                    val scale = minOf(
-                        maxDim.toFloat() / original.width,
-                        maxDim.toFloat() / original.height,
-                        1f
-                    )
-                    val nw = (original.width * scale).toInt()
-                    val nh = (original.height * scale).toInt()
-                    val scaled = Bitmap.createScaledBitmap(original, nw, nh, true)
-
+                    val scale = minOf(maxDim.toFloat()/original.width, maxDim.toFloat()/original.height, 1f)
+                    val scaled = Bitmap.createScaledBitmap(original, (original.width*scale).toInt(), (original.height*scale).toInt(), true)
                     val baos = ByteArrayOutputStream()
                     scaled.compress(Bitmap.CompressFormat.JPEG, 72, baos)
                     val b64 = Base64.encodeToString(baos.toByteArray(), Base64.NO_WRAP)
-
                     runOnUiThread { js("window.onPickedImage('$b64')") }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+                } catch (e: Exception) { e.printStackTrace() }
             }
         }
     }
@@ -131,15 +121,28 @@ class MainActivity : AppCompatActivity() {
         @JavascriptInterface
         fun start(name: String, avatar: String) {
             myName = name
-            myAvatar = avatar
-            udp.start(name, avatar)
+            if (avatar.isNotEmpty()) myAvatar = avatar
+            udp.start(name)
             files.start()
         }
 
         @JavascriptInterface
-        fun send(text: String) {
-            udp.sendToAll(myName, text)
+        fun broadcastAvatar(data: String) {
+            myAvatar = data
+            avatarSentTo.clear()
+            thread {
+                udp.getPeers().forEach { p ->
+                    p.address.hostAddress?.let { host ->
+                        if (files.sendFile(host, udp.id, myName, "avatar", data)) {
+                            avatarSentTo.add(p.id)
+                        }
+                    }
+                }
+            }
         }
+
+        @JavascriptInterface
+        fun send(text: String) { udp.sendToAll(myName, text) }
 
         @JavascriptInterface
         fun sendFile(type: String, data: String) {
@@ -147,8 +150,9 @@ class MainActivity : AppCompatActivity() {
             val fromId = udp.id
             thread {
                 peers.forEach { p ->
-                    val host = p.address.hostAddress ?: return@forEach
-                    files.sendFile(host, fromId, myName, type, data)
+                    p.address.hostAddress?.let { host ->
+                        files.sendFile(host, fromId, myName, type, data)
+                    }
                 }
             }
         }
@@ -156,8 +160,7 @@ class MainActivity : AppCompatActivity() {
         @JavascriptInterface
         fun pickImage() {
             runOnUiThread {
-                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                startActivityForResult(intent, REQ_PICK)
+                startActivityForResult(Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), REQ_PICK)
             }
         }
 
@@ -166,20 +169,16 @@ class MainActivity : AppCompatActivity() {
             requestMic()
             try {
                 recordFile = File(cacheDir, "voice_${System.currentTimeMillis()}.m4a")
-                recorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    MediaRecorder(this@MainActivity)
-                } else {
-                    @Suppress("DEPRECATION")
-                    MediaRecorder()
-                }.apply {
+                recorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) MediaRecorder(this@MainActivity)
+                           else @Suppress("DEPRECATION") MediaRecorder()
+                recorder!!.apply {
                     setAudioSource(MediaRecorder.AudioSource.MIC)
                     setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
                     setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
                     setAudioEncodingBitRate(24000)
                     setAudioSamplingRate(22050)
                     setOutputFile(recordFile!!.absolutePath)
-                    prepare()
-                    start()
+                    prepare(); start()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -190,9 +189,7 @@ class MainActivity : AppCompatActivity() {
         @JavascriptInterface
         fun stopRecording() {
             try {
-                recorder?.stop()
-                recorder?.release()
-                recorder = null
+                recorder?.stop(); recorder?.release(); recorder = null
                 val f = recordFile ?: return
                 val b64 = Base64.encodeToString(f.readBytes(), Base64.NO_WRAP)
                 runOnUiThread { js("window.onRecorded('$b64')") }
@@ -204,17 +201,10 @@ class MainActivity : AppCompatActivity() {
 
         @JavascriptInterface
         fun cancelRecording() {
-            try {
-                recorder?.stop()
-                recorder?.release()
-                recorder = null
-            } catch (_: Exception) {}
+            try { recorder?.stop(); recorder?.release(); recorder = null } catch (_: Exception) {}
         }
 
         @JavascriptInterface
-        fun stop() {
-            udp.stop()
-            files.stop()
-        }
+        fun stop() { udp.stop(); files.stop() }
     }
 }
