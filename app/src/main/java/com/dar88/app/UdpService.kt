@@ -9,45 +9,38 @@ import java.util.UUID
 import kotlin.concurrent.thread
 
 class UdpService(
-    private val onPeer: (String, String, String) -> Unit,
+    private val onPeer: (String, String) -> Unit,
     private val onPeerGone: (String) -> Unit,
     private val onMessage: (String, String, String) -> Unit
 ) {
     companion object {
         const val PORT = 8888
         const val MAGIC = "DAR88"
-        const val SEP = "\u0001"          // unit separator — never appears in names
+        const val SEP = "\u0001"
         const val HELLO_INTERVAL = 2000L
         const val PEER_TIMEOUT = 8000L
     }
 
     private val myId = UUID.randomUUID().toString().take(8)
     private var myName = ""
-    private var myAvatar = ""
     @Volatile private var running = false
     private var socket: DatagramSocket? = null
     private val peers = mutableMapOf<String, PeerInfo>()
 
-    /** Public id of this device — used by FileTransferService as sender identity. */
     val id: String get() = myId
-
-    /** Snapshot of currently known peers — used to fan out file transfers over TCP. */
     fun getPeers(): List<PeerInfo> = peers.values.toList()
 
     data class PeerInfo(
         val id: String,
         var name: String,
-        var avatar: String,
         var address: InetAddress,
         var lastSeen: Long
     )
 
-    fun start(name: String, avatar: String) {
+    fun start(name: String) {
         if (running) return
         myName = name
-        myAvatar = avatar
         running = true
-
         try {
             socket = DatagramSocket(null).apply {
                 reuseAddress = true
@@ -55,11 +48,8 @@ class UdpService(
                 bind(InetSocketAddress(PORT))
             }
         } catch (e: Exception) {
-            e.printStackTrace()
-            running = false
-            return
+            e.printStackTrace(); running = false; return
         }
-
         thread { listenLoop() }
         thread { broadcastLoop() }
         thread { cleanupLoop() }
@@ -72,20 +62,17 @@ class UdpService(
                 val packet = DatagramPacket(buf, buf.size)
                 socket?.receive(packet)
                 handlePacket(packet)
-            } catch (e: Exception) {
-                if (running) e.printStackTrace()
-            }
+            } catch (e: Exception) { if (running) e.printStackTrace() }
         }
     }
 
     private fun broadcastLoop() {
         while (running) {
             try {
-                val msg = MAGIC + SEP + "HELLO" + SEP + myId + SEP + myName + SEP + myAvatar
+                // Small HELLO — no avatar. This is what makes range work.
+                val msg = MAGIC + SEP + "HELLO" + SEP + myId + SEP + myName
                 broadcastBytes(msg.toByteArray(Charsets.UTF_8))
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            } catch (e: Exception) { e.printStackTrace() }
             Thread.sleep(HELLO_INTERVAL)
         }
     }
@@ -94,16 +81,12 @@ class UdpService(
         try {
             socket?.send(DatagramPacket(bytes, bytes.size, InetAddress.getByName("255.255.255.255"), PORT))
         } catch (_: Exception) {}
-
         try {
             NetworkInterface.getNetworkInterfaces().toList().forEach { iface ->
                 if (!iface.isUp || iface.isLoopback) return@forEach
                 iface.interfaceAddresses.forEach { addr ->
-                    val bcast = addr.broadcast
-                    if (bcast != null) {
-                        try {
-                            socket?.send(DatagramPacket(bytes, bytes.size, bcast, PORT))
-                        } catch (_: Exception) {}
+                    addr.broadcast?.let { b ->
+                        try { socket?.send(DatagramPacket(bytes, bytes.size, b, PORT)) } catch (_: Exception) {}
                     }
                 }
             }
@@ -118,10 +101,8 @@ class UdpService(
     private fun cleanupLoop() {
         while (running) {
             val now = System.currentTimeMillis()
-            val gone = peers.filter { now - it.value.lastSeen > PEER_TIMEOUT }.keys.toList()
-            gone.forEach {
-                peers.remove(it)
-                onPeerGone(it)
+            peers.filter { now - it.value.lastSeen > PEER_TIMEOUT }.keys.toList().forEach {
+                peers.remove(it); onPeerGone(it)
             }
             Thread.sleep(2000)
         }
@@ -130,30 +111,19 @@ class UdpService(
     private fun handlePacket(packet: DatagramPacket) {
         val msg = String(packet.data, 0, packet.length, Charsets.UTF_8)
         val parts = msg.split(SEP)
-
         if (parts.size < 3 || parts[0] != MAGIC) return
-
         when (parts[1]) {
             "HELLO" -> {
                 if (parts.size < 4) return
-                val id = parts[2]
-                val name = parts[3]
-                val avatar = if (parts.size >= 5) parts[4] else ""
+                val id = parts[2]; val name = parts[3]
                 if (id == myId) return
                 val isNew = !peers.containsKey(id)
-                val old = peers[id]
-                peers[id] = PeerInfo(id, name, avatar, packet.address, System.currentTimeMillis())
-                // Notify JS if new peer OR if name/avatar changed
-                if (isNew || old?.name != name || old?.avatar != avatar) {
-                    onPeer(id, name, avatar)
-                }
+                peers[id] = PeerInfo(id, name, packet.address, System.currentTimeMillis())
+                if (isNew) onPeer(id, name)
             }
             "MSG" -> {
                 if (parts.size < 5) return
-                val fromId = parts[2]
-                val fromName = parts[3]
-                val text = parts[4]
-                // CRITICAL: skip our own broadcast that echoed back
+                val fromId = parts[2]; val fromName = parts[3]; val text = parts[4]
                 if (fromId == myId) return
                 peers[fromId]?.lastSeen = System.currentTimeMillis()
                 onMessage(fromId, fromName, text)
@@ -164,7 +134,6 @@ class UdpService(
     fun stop() {
         running = false
         try { socket?.close() } catch (_: Exception) {}
-        socket = null
-        peers.clear()
+        socket = null; peers.clear()
     }
 }
