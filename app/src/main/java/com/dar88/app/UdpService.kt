@@ -28,6 +28,12 @@ class UdpService(
     private var socket: DatagramSocket? = null
     private val peers = mutableMapOf<String, PeerInfo>()
 
+    /** Public id of this device — used by FileTransferService as sender identity. */
+    val id: String get() = myId
+
+    /** Snapshot of currently known peers — used to fan out file transfers over TCP. */
+    fun getPeers(): List<PeerInfo> = peers.values.toList()
+
     data class PeerInfo(
         val id: String,
         var name: String,
