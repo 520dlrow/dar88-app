@@ -89,7 +89,6 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
 .send svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .send.sent{animation:sentPulse .5s cubic-bezier(.2,.9,.3,1.2)}
 @keyframes sentPulse{0%{transform:scale(1)}40%{transform:scale(1.15);background:var(--ok)}100%{transform:scale(1);background:var(--accent)}}
-/* Attach menu */
 .attach-menu{position:absolute;left:18px;right:18px;bottom:calc(80px + env(safe-area-inset-bottom,0px));background:var(--surface);border:1px solid var(--border-hi);border-radius:var(--r-lg);box-shadow:0 12px 40px rgba(0,0,0,.18);padding:8px;display:none;z-index:20;animation:menuUp .25s cubic-bezier(.2,.8,.2,1)}
 .attach-menu.on{display:flex;gap:6px}
 @keyframes menuUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -98,7 +97,6 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
 .attach-item .ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
 .attach-item .ic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .attach-item .lbl{font-family:var(--fm);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-2);font-weight:600}
-/* Recording overlay */
 .recording-bar{position:absolute;left:18px;right:18px;bottom:calc(80px + env(safe-area-inset-bottom,0px));background:var(--surface);border:1px solid var(--warn);border-radius:var(--r-lg);box-shadow:0 12px 40px rgba(0,0,0,.18);padding:14px 16px;display:none;z-index:25;align-items:center;gap:14px;animation:menuUp .25s cubic-bezier(.2,.8,.2,1)}
 .recording-bar.on{display:flex}
 .rec-dot{width:12px;height:12px;border-radius:50%;background:#e8483a;animation:rec 1s ease-in-out infinite;flex-shrink:0}
@@ -109,12 +107,10 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
 .rec-btn.cancel{background:var(--surface-2);color:var(--text-2)}
 .rec-btn.send{background:var(--accent);color:#fff;box-shadow:0 3px 10px var(--accent-glow)}
 .rec-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-/* Image preview */
 .preview-bar{position:absolute;left:18px;right:18px;bottom:calc(80px + env(safe-area-inset-bottom,0px));background:var(--surface);border:1px solid var(--border-hi);border-radius:var(--r-lg);box-shadow:0 12px 40px rgba(0,0,0,.18);padding:12px;display:none;z-index:25;gap:12px;align-items:center;animation:menuUp .25s cubic-bezier(.2,.8,.2,1)}
 .preview-bar.on{display:flex}
 .preview-bar img{width:56px;height:56px;object-fit:cover;border-radius:10px;flex-shrink:0}
 .preview-info{flex:1;font-family:var(--fm);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);font-weight:600}
-/* Settings */
 .settings{flex:1;overflow-y:auto;padding:6px 0}
 .settings h2{font-family:var(--fd);font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
 .settings .sub{color:var(--text-2);font-size:13.5px;margin-bottom:22px}
@@ -141,10 +137,13 @@ input{font:inherit;color:inherit;border:0;background:none;outline:none}
 .swatch-nuit{background:linear-gradient(135deg,#14110d 50%,#d4a24a 50%)}
 .swatch-foret{background:linear-gradient(135deg,#f0f5ee 50%,#4a7c48 50%)}
 .swatch-ocean{background:linear-gradient(135deg,#eef3f8 50%,#2e6ea8 50%)}
-.copyright{margin:24px 0 30px;padding:20px 16px;border-top:1px solid var(--border);text-align:center;font-family:var(--fm);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);line-height:1.8}
-.copyright .brand-line{font-family:var(--fd);font-size:16px;font-weight:700;text-transform:none;letter-spacing:0;color:var(--text-2);margin-bottom:6px}
+.copyright{margin:24px 0 30px;padding:20px 16px;border-top:1px solid var(--border);text-align:center;font-family:var(--fm);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);line-height:1.9}
+.copyright .brand-line{font-family:var(--fd);font-size:16px;font-weight:700;text-transform:none;letter-spacing:0;color:var(--text-2);margin-bottom:8px}
 .copyright .brand-line em{color:var(--accent);font-style:normal}
 .copyright a{color:var(--accent);text-decoration:none;word-break:break-all}
+.copyright .contact{margin-top:10px;display:flex;flex-direction:column;gap:6px;align-items:center}
+.copyright .contact a{display:inline-flex;align-items:center;gap:6px;text-transform:none;letter-spacing:.03em;font-size:12px}
+.copyright .contact svg{width:14px;height:14px;fill:currentColor;flex-shrink:0}
 input[type=file]{display:none}
 </style>
 </head>
@@ -256,8 +255,17 @@ input[type=file]{display:none}
     </div>
     <div class="copyright">
       <div class="brand-line">DAR<em>88</em></div>
-      © 2026 MC88 · Tous droits réservés<br>
-      <a href="mailto:mohamed005cheikh@gmail.com">mohamed005cheikh@gmail.com</a>
+      © 2026 MC88 · Tous droits réservés
+      <div class="contact">
+        <a href="mailto:mohamed005cheikh@gmail.com">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          mohamed005cheikh@gmail.com
+        </a>
+        <a href="https://wa.me/22230726475" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+          +222 30 72 64 75
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -298,7 +306,7 @@ themesEl.addEventListener('click',function(e){var b=e.target.closest('.theme-swa
 var audioCtx=null;
 function initAudio(){if(audioCtx)return;try{audioCtx=new (window.AudioContext||window.webkitAudioContext)()}catch(_){}}
 function beep(f,d,v,delay){if(!soundOn||!audioCtx)return;var t=audioCtx.currentTime+(delay||0);var o=audioCtx.createOscillator();var g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(v,t+0.008);g.gain.exponentialRampToValueAtTime(0.0001,t+d);o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+d+0.03)}
-function playSound(k){initAudio();if(k==='tap')beep(1400,0.025,0.06);else if(k==='send'){beep(880,0.06,0.08,0);beep(1180,0.09,0.07,0.06)}else if(k==='receive'){beep(660,0.07,0.08,0);beep(990,0.11,0.07,0.07)}else if(k==='tick')beep(1800,0.02,0.04)}
+function playSound(k){initAudio();if(k==='tap')beep(1400,0.025,0.06);else if(k==='send'){beep(880,0.06,0.08,0);beep(1180,0.09,0.07,0.06)}else if(k==='receive'){beep(660,0.07,0.08,0);beep(990,0.11,0.07,0.07)}}
 
 function initials(n){var w=String(n||'?').trim().split(/\s+/);return ((w[0]||'?')[0]+((w[1]||'')[0]||'')).toUpperCase()}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
@@ -372,7 +380,6 @@ function renderOnline(){
   hdStatus.textContent='La maison · '+count+(count>1?' en ligne':'');
 }
 
-/* Composer */
 msgInput.addEventListener('input',function(){sendBtn.disabled=!msgInput.value.trim()});
 sendBtn.addEventListener('click',sendText);
 msgInput.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();sendText()}});
@@ -386,7 +393,6 @@ function sendText(){
   playSound('send');
 }
 
-/* Attach menu */
 attachBtn.addEventListener('click',function(e){
   e.stopPropagation();
   attachMenu.classList.toggle('on');
@@ -395,13 +401,10 @@ attachBtn.addEventListener('click',function(e){
 document.addEventListener('click',function(e){
   if(!attachMenu.contains(e.target)&&e.target!==attachBtn){attachMenu.classList.remove('on')}
 });
-
 pickPhotoBtn.addEventListener('click',function(){
   attachMenu.classList.remove('on');
   if(window.Android&&Android.pickImage){Android.pickImage()}
 });
-
-/* Image received from native */
 window.onPickedImage=function(b64){
   pendingImage=b64;
   previewImg.src='data:image/jpeg;base64,'+b64;
@@ -416,7 +419,6 @@ previewSend.addEventListener('click',function(){
   playSound('send');
 });
 
-/* Voice recording */
 recVoiceBtn.addEventListener('click',function(){
   attachMenu.classList.remove('on');
   if(window.Android&&Android.startRecording){Android.startRecording()}
@@ -425,9 +427,7 @@ recVoiceBtn.addEventListener('click',function(){
   recInterval=setInterval(function(){
     recSeconds++;
     recTime.textContent=fmtDur(recSeconds);
-    if(recSeconds>=60){ /* max 60s */
-      stopRecSend();
-    }
+    if(recSeconds>=60){stopRecSend()}
   },1000);
 });
 function stopRecCleanup(){if(recInterval){clearInterval(recInterval);recInterval=null}recordingBar.classList.remove('on')}
@@ -439,26 +439,24 @@ recCancel.addEventListener('click',function(){
 function stopRecSend(){
   var dur=recSeconds;
   stopRecCleanup();
-  if(window.Android&&Android.stopRecording){Android.stopRecording();window.__lastRecDur=dur}
+  window.__lastRecDur=dur;
+  if(window.Android&&Android.stopRecording){Android.stopRecording()}
 }
 recSend.addEventListener('click',stopRecSend);
 
 window.onRecorded=function(b64){
   var dur=window.__lastRecDur||recSeconds;
   if(window.Android&&Android.sendFile){Android.sendFile('voice',b64+'|'+dur)}
-  // Need to split for the message display
   addVoiceMsg({name:myName,data:b64,dur:dur,mine:true,avatar:myAvatarRaw});
   playSound('send');
 };
 window.onRecordError=function(){stopRecCleanup();playSound('tap')};
 
-/* Settings */
 setBtn.addEventListener('click',function(){setName.value=myName;show(vSettings);playSound('tap')});
 closeSetBtn.addEventListener('click',function(){show(vChat);playSound('tap')});
 setName.addEventListener('input',function(){var v=setName.value.trim().slice(0,30);if(v){myName=v;save();renderOnline();updateMyAvatarUI()}});
 setSound.addEventListener('click',function(){soundOn=!soundOn;setSound.classList.toggle('on',soundOn);save();if(soundOn)playSound('tap')});
 
-/* Profile pic via HTML file input — quick path */
 wAvatar.addEventListener('click',function(){pickAvatar.click()});
 setAvatar.addEventListener('click',function(){pickAvatar2.click()});
 function handleFile(input){
@@ -474,7 +472,9 @@ function handleFile(input){
       var dataURL=c.toDataURL('image/jpeg',0.78);
       myAvatar=dataURL;myAvatarRaw=dataURL.split(',')[1];
       updateMyAvatarUI();save();
-      if(window.Android&&Android.start&&myName){Android.start(myName,myAvatarRaw)}
+      // Broadcast new avatar to all peers via TCP
+      if(window.Android&&Android.broadcastAvatar&&myName){Android.broadcastAvatar(myAvatarRaw)}
+      else if(window.Android&&Android.start&&myName){Android.start(myName,myAvatarRaw)}
       playSound('tap');
     };
     img.src=e.target.result;
@@ -485,8 +485,14 @@ function handleFile(input){
 pickAvatar.addEventListener('change',function(){handleFile(pickAvatar)});
 pickAvatar2.addEventListener('change',function(){handleFile(pickAvatar2)});
 
-/* Native callbacks */
-window.onPeer=function(id,name,avatar){peers[id]={name:name,avatar:avatar||'',lastSeen:Date.now()};renderOnline()};
+/* -------- Native callbacks -------- */
+window.onPeer=function(id,name){
+  peers[id]={name:name,avatar:'',lastSeen:Date.now()};
+  renderOnline();
+};
+window.onPeerAvatar=function(id,data){
+  if(peers[id]){peers[id].avatar=data;renderOnline()}
+};
 window.onPeerGone=function(id){delete peers[id];renderOnline()};
 window.onMessage=function(fromId,fromName,text){
   if(fromId===myName)return;
@@ -496,6 +502,10 @@ window.onMessage=function(fromId,fromName,text){
 };
 window.onFile=function(fromId,fromName,type,data){
   var p=peers[fromId];var av=p?p.avatar:'';
+  if(type==='avatar'){
+    if(peers[fromId]){peers[fromId].avatar=data;renderOnline()}
+    return;
+  }
   if(type==='image'){addImageMsg({name:fromName,data:data,mine:false,avatar:av})}
   else if(type==='voice'){
     var parts=data.split('|');
